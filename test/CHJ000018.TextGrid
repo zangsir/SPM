@@ -1,0 +1,130 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0 
+xmax = 3.320
+tiers? <exists> 
+size = 1
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "syllable" 
+        xmin = 0
+        xmax = 3.320 
+        intervals: size = 29        intervals [1]:
+            xmin = 0.000 
+            xmax = 0.415 
+            text = "sil"
+                    intervals [2]:
+            xmin = 0.415 
+            xmax = 0.505 
+            text = "uo3"
+                    intervals [3]:
+            xmin = 0.505 
+            xmax = 0.548 
+            text = "m"
+                    intervals [4]:
+            xmin = 0.548 
+            xmax = 0.642 
+            text = "en0"
+                    intervals [5]:
+            xmin = 0.642 
+            xmax = 0.668 
+            text = "d"
+                    intervals [6]:
+            xmin = 0.668 
+            xmax = 0.849 
+            text = "ui4"
+                    intervals [7]:
+            xmin = 0.849 
+            xmax = 0.893 
+            text = "zh"
+                    intervals [8]:
+            xmin = 0.893 
+            xmax = 1.038 
+            text = "ong1"
+                    intervals [9]:
+            xmin = 1.038 
+            xmax = 1.065 
+            text = "g"
+                    intervals [10]:
+            xmin = 1.065 
+            xmax = 1.162 
+            text = "uo2"
+                    intervals [11]:
+            xmin = 1.162 
+            xmax = 1.189 
+            text = "d"
+                    intervals [12]:
+            xmin = 1.189 
+            xmax = 1.229 
+            text = "e0"
+                    intervals [13]:
+            xmin = 1.229 
+            xmax = 1.295 
+            text = "m"
+                    intervals [14]:
+            xmin = 1.295 
+            xmax = 1.426 
+            text = "ao4"
+                    intervals [15]:
+            xmin = 1.426 
+            xmax = 1.526 
+            text = "i4"
+                    intervals [16]:
+            xmin = 1.526 
+            xmax = 1.585 
+            text = "zh"
+                    intervals [17]:
+            xmin = 1.585 
+            xmax = 1.780 
+            text = "eng4"
+                    intervals [18]:
+            xmin = 1.780 
+            xmax = 1.854 
+            text = "c"
+                    intervals [19]:
+            xmin = 1.854 
+            xmax = 2.006 
+            text = "e4"
+                    intervals [20]:
+            xmin = 2.006 
+            xmax = 2.080 
+            text = "sil"
+                    intervals [21]:
+            xmin = 2.080 
+            xmax = 2.172 
+            text = "sh"
+                    intervals [22]:
+            xmin = 2.172 
+            xmax = 2.381 
+            text = "iii4"
+                    intervals [23]:
+            xmin = 2.381 
+            xmax = 2.516 
+            text = "sh"
+                    intervals [24]:
+            xmin = 2.516 
+            xmax = 2.588 
+            text = "iii1"
+                    intervals [25]:
+            xmin = 2.588 
+            xmax = 2.633 
+            text = "b"
+                    intervals [26]:
+            xmin = 2.633 
+            xmax = 2.833 
+            text = "ai4"
+                    intervals [27]:
+            xmin = 2.833 
+            xmax = 2.874 
+            text = "d"
+                    intervals [28]:
+            xmin = 2.874 
+            xmax = 2.973 
+            text = "e0"
+                    intervals [29]:
+            xmin = 2.973 
+            xmax = 3.320 
+            text = "sil"
+            

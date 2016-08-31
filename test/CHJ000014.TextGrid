@@ -1,0 +1,62 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0 
+xmax = 1.277
+tiers? <exists> 
+size = 1
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "syllable" 
+        xmin = 0
+        xmax = 1.277 
+        intervals: size = 12        intervals [1]:
+            xmin = 0.000 
+            xmax = 0.426 
+            text = "sil"
+                    intervals [2]:
+            xmin = 0.426 
+            xmax = 0.470 
+            text = "t"
+                    intervals [3]:
+            xmin = 0.470 
+            xmax = 0.521 
+            text = "a1"
+                    intervals [4]:
+            xmin = 0.521 
+            xmax = 0.567 
+            text = "m"
+                    intervals [5]:
+            xmin = 0.567 
+            xmax = 0.626 
+            text = "en0"
+                    intervals [6]:
+            xmin = 0.626 
+            xmax = 0.635 
+            text = "d"
+                    intervals [7]:
+            xmin = 0.635 
+            xmax = 0.741 
+            text = "ou1"
+                    intervals [8]:
+            xmin = 0.741 
+            xmax = 0.767 
+            text = "g"
+                    intervals [9]:
+            xmin = 0.767 
+            xmax = 0.936 
+            text = "an3"
+                    intervals [10]:
+            xmin = 0.936 
+            xmax = 0.964 
+            text = "d"
+                    intervals [11]:
+            xmin = 0.964 
+            xmax = 1.133 
+            text = "ao4"
+                    intervals [12]:
+            xmin = 1.133 
+            xmax = 1.277 
+            text = "sil"
+            

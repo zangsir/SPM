@@ -38,7 +38,7 @@ def gen_simple_pitch_file(pitch_file):
 
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     #set this number
     num_per_row=2
     inputname='pitch'

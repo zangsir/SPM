@@ -8,7 +8,7 @@ import numpy as np
 #this interpolate_pitch() and the interpolation at the end of trim() is: in the latter, which was applied first, the time variable has a lot of gaps, namely, the segments from praat's pitch estimation without voicing and therefore no pitch values. The former, applied later, will fill in all the value with a continuous time start to end with 0.001s step.
 def interpolate_pitch(begin,end,time,pitch):
     interp_time=np.arange(float(begin),float(end),0.001)
-    fp=interp1d(time,pitch,bounds_error=False, fill_value=-0.001)
+    fp=interp1d(time,pitch,bounds_error=False, fill_value=1000)
     interp_pitch=fp(interp_time)
     return interp_time,interp_pitch
 
@@ -54,9 +54,9 @@ def trim(inputfile):
     adjusted_time=[i for i in time if i<=new_time[-1]]
         
     #plt.plot(new_time,new_pitch)
-    fp=interp1d(new_time,new_pitch,bounds_error=False, fill_value=0.001)
+    fp=interp1d(new_time,new_pitch,bounds_error=False, fill_value=1000)
     ####important: at first when I invented adjusted_time, I used that to interpolate the entire pitch track so the end won't get interpolated in an out-of-bounds manner. But then for the sake of working with textgrids, we changed to doing the interpolation using the entire time of the original track. So beware the fp(time) vs. fp(adjusted_time ) below. 
-    return time,adjusted_time,pitch,fp(time)
+    return time,adjusted_time,pitch,fp(adjusted_time)
 
 
 def plot_orig_interp(orig_time,orig_pitch,trim_time,trim_pitch,outname):
@@ -85,7 +85,7 @@ if __name__=='__main__':
         inputfile=dir+'/'+file_pitch
         print inputfile
         time,adjusted_time,pitch,trim_pitch=trim(inputfile)
-        begin,end=time[0],time[-1]
+        begin,end=adjusted_time[0],adjusted_time[-1]
         interp_time,interp_pitch=interpolate_pitch(begin,end,time,trim_pitch)
         interp_pitch=pitch_floor(interp_pitch)
         outname_mod=outname+file_pitch.split('.')[0]

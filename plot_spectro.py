@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from bisect import bisect_left
 from batch_interp import *
+from scipy.interpolate import interp1d
 from scipy.io.wavfile import read
 
 #sample usage:
@@ -55,7 +56,7 @@ def gen_annos(time,xt,labels):
 
 
 
-def plot_spectro(time,pitch,my_xticks,timestamps,audio_file):
+def plot_spectro(time,pitch,my_xticks,timestamps,audio_file,plotname):
     #input: a time and a pitch object (list), and the set of xticks
     input_data = read(audio_file)
     fs=16000
@@ -69,7 +70,7 @@ def plot_spectro(time,pitch,my_xticks,timestamps,audio_file):
         #print l
         plt.plot((l[0],l[0]),(50,1500),'k-')
     plt.ylim([50,1500])
-    plt.savefig('spectro.pdf')
+    plt.savefig(plotname+'-spectro.pdf')
 
 
 def gen_qphons(timestamps,trim_pitch,time):
@@ -110,13 +111,50 @@ def write_qphons_file(filename,qph):
     g.close()
 
 
-
+#added trim-plot and interp-plot functions in plot_spectro.py. The former will show uninterpolated trimmed pitch track while the latter shows the entire time (as indicated by .phons file) with interpolated pitch. for visibility, extrapolation is set at 1000, but maybe reset to 0 when showing this to others.
 def do_plot(audio_file,pitch_tab_file,phons_file):
     timestamps,xt,labels=get_annos(phons_file)
     #get some time and pitch files
+    b=timestamps[0][0]
+    e=timestamps[-1][1]
     time,adjusted_time,pitch,trim_pitch=trim(pitch_tab_file)
-    my_xticks=gen_annos(time,xt,labels)
-    plot_spectro(time,pitch,my_xticks,timestamps,audio_file)
+    second_adjusted_time,trim_unv_pitch=trim_unvoiced(timestamps,adjusted_time,trim_pitch)
+    interp_time,interp_pitch=interpolate_pitch(b,e,second_adjusted_time,trim_unv_pitch)
+    my_xticks_interp=gen_annos(interp_time,xt,labels)
+    my_xticks = gen_annos(time,xt,labels)
+    plot_spectro(second_adjusted_time,trim_unv_pitch,my_xticks,timestamps,audio_file,"trim")
+    plot_spectro(interp_time,interp_pitch,my_xticks_interp,timestamps,audio_file,"interp")
+
+
+
+def trim_unvoiced(timestamps,adjusted_time,trim_pitch):
+    #adjusted_time and trim_pitch must have same length
+    "further trim all unvoiced segments in case it picked up pitch values on those"
+    trim_unv_pitch=[]
+    trim_unv_time=[]
+    for k in range(len(timestamps)):
+        tsp=timestamps[k]
+        start,end,label=tsp[0],tsp[1],tsp[2]
+
+        m = re.search(r'\d$', label)
+        #print label,m
+        # if the string ends in digits m will be a Match object, or None otherwise.
+        if m is not None:
+            #print start,end
+            #print tsp
+            syl_values=[trim_pitch[i] for i in range(len(trim_pitch)) \
+                        if adjusted_time[i]>=float(start) and adjusted_time[i] <=float(end)]
+            syl_times=[adjusted_time[i] for i in range(len(adjusted_time)) \
+                        if adjusted_time[i]>=float(start) and adjusted_time[i] <=float(end)]
+            trim_unv_pitch.extend(syl_values[:])
+            trim_unv_time.extend(syl_times[:])
+    second_adjusted_time=[time for time in adjusted_time if time>=trim_unv_time[0] and time<=trim_unv_time[-1]]
+
+    fp=interp1d(trim_unv_time,trim_unv_pitch)
+
+    return second_adjusted_time,fp(second_adjusted_time)
+
+
 
 
 
@@ -140,7 +178,7 @@ if __name__=="__main__":
             timestamps,xt,labels=get_annos(dir_phons+'/'+phons_file)
             #get some time and pitch files
             time,adjusted_time,pitch,trim_pitch=trim(pitch_tab_file)
-            qph=gen_qphons(timestamps,trim_pitch,time)
+            qph=gen_qphons(timestamps,trim_pitch,adjusted_time)#keep in mind trim_pitch has same len as adjusted_time,b/c it was interpolated using adjusted_time. in this function they must have the same len.adjusted time ends earlier than time, o/w they are identical.
             write_qphons_file(qphons_output,qph)
             
 

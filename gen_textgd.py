@@ -1,4 +1,5 @@
 from os import listdir
+import sys
 
 boilerplate="""File type = "ooTextFile"
 Object class = "TextGrid"
@@ -52,7 +53,7 @@ def write_file(out_name,content):
     f.close()
 
 
-path="test/"
+path=sys.argv[1]
 onlyfiles = [ f for f in listdir(path) if f.endswith(".phons")]
 print onlyfiles
 for phons_file in onlyfiles:

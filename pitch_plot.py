@@ -47,6 +47,7 @@ if __name__ == "__main__":
 
     outname=sys.argv[1]
     outname=outname+'.pdf'
+    plot_dir='plots'
 
     num_file=len(onlyfiles)
     num_plot=num_file
@@ -74,5 +75,5 @@ if __name__ == "__main__":
         else:
             j+=1
 
-    f.savefig(outname)
+    f.savefig(plot_dir+'/'+outname)
     print 'saved pitch plots ' + outname

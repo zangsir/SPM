@@ -2,20 +2,22 @@ form Params
     real pitch_step
     real pitch_ceiling
     word interpolate
+    text sound_path
 endform
 
 
 writeInfoLine()
-Create Strings as file list: "fileList", "/Users/zangsir/Desktop/speech-exp-diuss/test-small/*.flac"
+sound_files$=sound_path$ + "*.flac"
+Create Strings as file list: "fileList", sound_files$
 fileList = selected("Strings")
 fileCount = Get number of strings
-soundDir$="/Users/zangsir/Desktop/speech-exp-diuss/test/"
+#soundDir$="/Users/zangsir/Desktop/speech-exp-diuss/test/"
 
 for curFile from 1 to fileCount
     #appendInfoLine: curFile
     select fileList
     soundname$ = Get string... curFile
-    curSound=Read from file... 'soundDir$''soundname$'
+    curSound=Read from file... 'sound_path$''soundname$'
     #sound'curFile' = selected ("Sound", curFile)
     #filename$ = selected$ ("Sound", curFile)
     

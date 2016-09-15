@@ -35,21 +35,23 @@ def trim(inputfile):
             new_pitch.append(pitch[i])
             new_time.append(time[i])
         
-            
+    adjusted_time=[i for i in time if i<=new_time[-1]]
+
     #plt.plot(new_time,new_pitch)
     fp=interp1d(new_time,new_pitch,bounds_error=False, fill_value=-0.001)
-    return time,pitch,fp(time)
+    return time,adjusted_time,pitch,fp(adjusted_time)
 
 
-def plot_orig_trim(orig_time,orig_pitch,trim_pitch,outname):
+def plot_orig_trim(orig_time,adjusted_time,orig_pitch,trim_pitch,outname):
+    plot_dir='plots'
     f, (ax1, ax2) = plt.subplots(2, 1,sharey=True)
     #ax2.plot(new_time, new_pitch)
     #ax2.set_title("after trimming")
-    ax1.scatter(orig_time, trim_pitch)
+    ax1.scatter(adjusted_time, trim_pitch)
     ax1.set_title("linear interpolation")
     ax2.scatter(orig_time,orig_pitch)
     ax2.set_title("original")
-    outfile='trim-'+outname+'.pdf'
+    outfile=plot_dir+"/"+'trim-'+outname+'.pdf'
     f.savefig(outfile)
     plt.close()
     print 'saved trim plot ' + outfile
@@ -59,14 +61,15 @@ def plot_orig_trim(orig_time,orig_pitch,trim_pitch,outname):
 if __name__=='__main__':
     outname=sys.argv[1]
     dir='pitch'
+    #dir='pitch_prob'
     onlyfiles = [ f for f in listdir(dir) if f.endswith(".tab")]
     print onlyfiles
     for file_pitch in onlyfiles:
         inputfile=dir+'/'+file_pitch
         print inputfile
-        time,pitch,trim_pitch=trim(inputfile)
+        time,adjusted_time,pitch,trim_pitch=trim(inputfile)
         outname_mod=outname+file_pitch.split('.')[0]
-        plot_orig_trim(time,pitch,trim_pitch,outname_mod)
+        plot_orig_trim(time,adjusted_time,pitch,trim_pitch,outname_mod)
 
 
 

@@ -1,4 +1,4 @@
 #the .ipynb files reflect the evolution of the experiments over three conferences: COMPMORPHON 15, NAACL16(rejectec), ACL16
-1. the TS clustering task is the earliest task to be evaled, and its most current form should be reflected in NAACL16-tsclust.ipynb.
+1. the TS clustering task is the earliest task to be evaled, and its most current form should be reflected in NAACL16-tsclust.ipynb.structure of this file is:function defs; clustering using Euclidean dist; clustering using SAX-MINDIST; clustering using DTW.
 2. the TS classification task is developed for ACL16 and is in acl16.pynb and the related;
 3. the acl2016-2 in particular is done at the stage of revising and plotting the results at the revision stage for the ACL16. Therefore it contains mostly the plotting experiments but not eval experiments per se.

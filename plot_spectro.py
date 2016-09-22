@@ -117,13 +117,32 @@ def do_plot(audio_file,pitch_tab_file,phons_file):
     #get some time and pitch files
     b=timestamps[0][0]
     e=timestamps[-1][1]
+    #first trim(and interpolate to adjusted time)
     time,adjusted_time,pitch,trim_pitch=trim(pitch_tab_file)
+    #then trim unvoiced pitch
     second_adjusted_time,trim_unv_pitch=trim_unvoiced(timestamps,adjusted_time,trim_pitch)
+    #interpolate to .phons file time with extrapolation on beginning and end at a high(for visibility in plot) constant value
     interp_time,interp_pitch=interpolate_pitch(b,e,second_adjusted_time,trim_unv_pitch)
+    #get the labels and label positions for the plot
     my_xticks_interp=gen_annos(interp_time,xt,labels)
     my_xticks = gen_annos(time,xt,labels)
     plot_spectro(second_adjusted_time,trim_unv_pitch,my_xticks,timestamps,audio_file,"trim")
     plot_spectro(interp_time,interp_pitch,my_xticks_interp,timestamps,audio_file,"interp")
+
+
+def pitch_proc_chain(pitch_tab_file,phons_file):
+    timestamps,xt,labels=get_annos(phons_file)
+    #get some time and pitch files
+    b=timestamps[0][0]
+    e=timestamps[-1][1]
+    #first trim(and interpolate to adjusted time)
+    time,adjusted_time,pitch,trim_pitch=trim(pitch_tab_file)
+    #then trim unvoiced pitch
+    second_adjusted_time,trim_unv_pitch=trim_unvoiced(timestamps,adjusted_time,trim_pitch)
+    #interpolate to .phons file time with extrapolation on beginning and end at a high(for visibility in plot) constant value
+    interp_time,interp_pitch=interpolate_pitch(b,e,second_adjusted_time,trim_unv_pitch)
+    return interp_time,interp_pitch
+
 
 
 
@@ -160,12 +179,14 @@ def trim_unvoiced(timestamps,adjusted_time,trim_pitch):
 
 
 if __name__=="__main__":
-    if len(sys.argv)==4:
+    if len(sys.argv)==4:#use this mode to plot spectrogram overlaid with pitch contour and segmentation for individual file
+        #python plot_spectro.py pitch/pitcCHX000040.tab test/CHX000040.phons test/CHX000040.wav 
         audio_file=sys.argv[3]
         pitch_tab_file=sys.argv[1]
         phons_file=sys.argv[2]
         do_plot(audio_file,pitch_tab_file,phons_file)
     if len(sys.argv)==2:
+        #use this option to write to qphons files that adds a col to phons file to indicate the pitch est. to syllable dur. ratio 
         dir_phons=sys.argv[1]
         onlyfiles = [ f for f in listdir(dir_phons) if f.endswith(".phons")]
         print onlyfiles

@@ -39,7 +39,7 @@ def trim(inputfile):
 
 
     B=plt.boxplot(pitch)
-    plt.savefig(inputfile+'box.pdf')
+    #plt.savefig(inputfile+'box.pdf')
     plt.close() 
     ydata=[item.get_ydata() for item in B['whiskers']]
     upper=ydata[1][1] #this is the upper whisker

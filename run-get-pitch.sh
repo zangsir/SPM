@@ -2,6 +2,7 @@
 
 #0.01,0.001
 #50,75
+#this script is the pipeline of pitch preprocessing, including pitch estimation, format conversion, trimming, unvoiced trim, interpolation, with the options in the middle to plot stuff
 
 pitch_step=0.001
 pitch_ceiling=50
@@ -12,14 +13,17 @@ sound_path="/Users/zangsir/Desktop/speech-exp-diuss/test/"
 
 outname='pitch-'$pitch_step'-'$pitch_ceiling'-intp'$interpolation
 echo ==============
-echo 'finished generating pitch files, now plotting...'
-python pitch_plot.py $outname
+#echo 'finished generating pitch files, now plotting...'
+#python pitch_plot.py $outname
 #open $outname$".pdf"
 #python trim_pitch.py $outname
-echo =============
+#echo =============
 echo converting pitch to tab files...
 python simple_pitch.py
 echo ============
 #echo trimming...
 #python batch_trim.py $outname
 #python batch_interp.py $outname
+echo processing pitch...
+#assumes pitch tab file and phons file are both in the pitch/ directory
+python write_pitch_proc.py

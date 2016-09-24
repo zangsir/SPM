@@ -1,0 +1,10 @@
+#setup
+-w3m
+-R
+-vim
+-apache(https://www.raspberrypi.org/documentation/remote-access/web-server/apache.md)
+-github(maybe already have it)
+-create user?
+-minecraft python
+
+

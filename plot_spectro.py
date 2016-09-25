@@ -151,16 +151,24 @@ def trim_unvoiced(timestamps,adjusted_time,trim_pitch):
     "further trim all unvoiced segments in case it picked up pitch values on those"
     trim_unv_pitch=[]
     trim_unv_time=[]
+    ok_label=['m','n','l']
+
     for k in range(len(timestamps)):
         tsp=timestamps[k]
-        start,end,label=tsp[0],tsp[1],tsp[2]
+        prev_con_label=timestamps[k-1][2]
+        if prev_con_label in ok_label:
+            start=timestamps[k-1][0]
+            end,label=tsp[1],tsp[2]
 
+        else:
+            start,end,label=tsp[0],tsp[1],tsp[2]
         m = re.search(r'\d$', label)
         #print label,m
         # if the string ends in digits m will be a Match object, or None otherwise.
         if m is not None:
             #print start,end
             #print tsp
+
             syl_values=[trim_pitch[i] for i in range(len(trim_pitch)) \
                         if adjusted_time[i]>=float(start) and adjusted_time[i] <=float(end)]
             syl_times=[adjusted_time[i] for i in range(len(adjusted_time)) \

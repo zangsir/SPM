@@ -7,7 +7,7 @@
 pitch_step=0.001
 pitch_ceiling=50
 interpolation='no'
-sound_path="/Users/zangsir/Desktop/speech-exp-diuss/test/"
+sound_path="/Users/zangsir/Desktop/speech-exp-diuss/MacAir-orig-data/cmn_phonetic_segmentation_tone/data/train/"
 
 /Applications/Praat.app/Contents/MacOS/Praat ~/Desktop/speech-exp-diuss/get_pitch.praat $pitch_step $pitch_ceiling $interpolation $sound_path
 
@@ -25,5 +25,6 @@ echo ============
 #python batch_trim.py $outname
 #python batch_interp.py $outname
 echo processing pitch...
-#assumes pitch tab file and phons file are both in the pitch/ directory
-python write_pitch_proc.py
+#assumes pitch tab file and phons file are both in the pitch/ directory(currently turned off), or must give these paths:pitch_path,phons_path
+python write_pitch_proc.py 'pitch' $sound_path
+#the result of the operations above will be the trimmed and interpolated preprocessed pitch file, two col format, with extrapolation 1000, and without unvoiced frames. one file per sentence.

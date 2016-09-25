@@ -1,4 +1,4 @@
-cp ~/Desktop/speech-exp-diuss/*.py *.sh *.praat ~/repo/SPM
+cp ~/Desktop/speech-exp-diuss/*.py *.sh *.praat *.ipynb ~/repo/SPM
 cd ~/repo/SPM
 git status
 git add -A

@@ -4,13 +4,13 @@ from os import listdir
 
 
 #cmd line arg: give the directory where pitch tab and phons file exist
-#pitch_path=sys.argv[1]
-#phons_path=sys.argv[2]
-pitch_path=phons_path='pitchtest'
+pitch_path=sys.argv[1]
+phons_path=sys.argv[2]
+#pitch_path=phons_path='pitchtest'
 outdir='procd_pitch'
 onlyfiles = [ f for f in listdir(phons_path) if f.endswith(".phons")]
 for phons_file in onlyfiles:
-    print phons_file
+    #print phons_file
     first_name=phons_file.split('.phons')[0]
     phons_file=phons_path+'/'+phons_file
     pitch_tab_file=pitch_path+'/'+'pitc'+first_name+'.tab'

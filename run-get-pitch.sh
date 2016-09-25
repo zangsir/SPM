@@ -5,13 +5,13 @@
 #this script is the pipeline of pitch preprocessing, including pitch estimation, format conversion, trimming, unvoiced trim, interpolation, with the options in the middle to plot stuff
 
 pitch_step=0.001
-pitch_ceiling=50
+pitch_floor=50
 interpolation='no'
 sound_path="/Users/zangsir/Desktop/speech-exp-diuss/MacAir-orig-data/cmn_phonetic_segmentation_tone/data/train/"
 
-/Applications/Praat.app/Contents/MacOS/Praat ~/Desktop/speech-exp-diuss/get_pitch.praat $pitch_step $pitch_ceiling $interpolation $sound_path
+/Applications/Praat.app/Contents/MacOS/Praat ~/Desktop/speech-exp-diuss/get_pitch.praat $pitch_step $pitch_floor $interpolation $sound_path
 
-outname='pitch-'$pitch_step'-'$pitch_ceiling'-intp'$interpolation
+outname='pitch-'$pitch_step'-'$pitch_floor'-intp'$interpolation
 echo ==============
 #echo 'finished generating pitch files, now plotting...'
 #python pitch_plot.py $outname

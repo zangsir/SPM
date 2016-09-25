@@ -1,8 +1,8 @@
 form Params
-    real pitch_step
-    real pitch_ceiling
-    word interpolate
-    text sound_path
+    real pitch_step 0.01
+    real pitch_floor 50
+    word interpolate no
+    text sound_path /Users/zangsir/Desktop/speech-exp-diuss/
 endform
 
 
@@ -21,16 +21,18 @@ for curFile from 1 to fileCount
     #sound'curFile' = selected ("Sound", curFile)
     #filename$ = selected$ ("Sound", curFile)
     
-    appendInfoLine: soundname$
+    #appendInfoLine: soundname$
     label$=selected$ ("Sound")
-    To Manipulation: pitch_step, pitch_ceiling, 600
-    Extract pitch tier
+    mani=To Manipulation: pitch_step, pitch_floor, 600
+    pt=Extract pitch tier
     if interpolate$="yes"
        Interpolate quadratically: 4, "Semitones"
        appendInfoLine: "interpolation done"
     endif
     Write to text file... pitch/pitc'label$'.pitch
     #appendInfoLine: "finished ", curFile
+    removeObject:mani,pt,curSound
+
 
 
    

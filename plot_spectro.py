@@ -189,6 +189,7 @@ def trim_unvoiced(timestamps,adjusted_time,trim_pitch):
 if __name__=="__main__":
     if len(sys.argv)==4:#use this mode to plot spectrogram overlaid with pitch contour and segmentation for individual file
         #python plot_spectro.py pitch/pitcCHX000040.tab test/CHX000040.phons test/CHX000040.wav 
+        #warning: to plot spectorgram it must take .wav file, not flac
         audio_file=sys.argv[3]
         pitch_tab_file=sys.argv[1]
         phons_file=sys.argv[2]

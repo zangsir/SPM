@@ -65,15 +65,15 @@ def plot_matrix_resample(pv,num_per_row,filename):
 def downsample_mix(vec,comp_len):
     orig_len=len(vec)
     a,b=int(math.floor(len(vec)/float(comp_len))),int(math.ceil(len(vec)/float(comp_len)))
-    print a,b
+    #print a,b
     if a!=b:
         x=(orig_len-30*b)/(a-b)
         y=comp_len-x
     else:
         x=y=comp_len/2
-    print x,y
-    print 'len vec:',orig_len
-    print 'len new vec:',str(a*x+b*y)
+    #print x,y
+    #print 'len vec:',orig_len
+    #print 'len new vec:',str(a*x+b*y)
     new_vec=[]
     #start sampling from 2nd element, not 0th
     i=b/2

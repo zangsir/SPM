@@ -39,7 +39,6 @@ def extract_syl(timestamps,time,pitch):
         #print start,end,label
         m = re.search(r'\d$', label)
         #print label,m
-        # if the string ends in digits m will be a Match object, or None otherwise.
         if m is not None:
             #print start,end
             #print tsp
@@ -67,27 +66,29 @@ def append_syl(pv,outname):
     f.close()
 
 def main():
-	#for all sentences;get pv; append lines to the output file
-	path='procd_pitch'
-	#dir='pitch_prob'
-	onlyfiles = [ f for f in listdir(path) if f.endswith(".tab")]
-	outdir='syl_csv'
-	#print onlyfiles
-	for file_pitch in onlyfiles:
-	    inputfile=path+'/'+file_pitch
-	    print inputfile
-	    first_name=file_pitch.split('.tab')[0]
-	    first_name=first_name.split('_')[0]
-	    phons_file='pitch/'+first_name+'.phons'
-	    outname=outdir+'/'+first_name+'_voiced.csv'
-	    time,pitch=read_pitch(inputfile)
-	    timestamps,xt,labels=get_annos(phons_file)
-	    pv=extract_syl(timestamps,time,pitch)
-	    append_syl(pv,outname)
-	    
+    #for all sentences;get pv; append lines to the output file
+    #path is pitch_path
+    path='norm_pitch'
+    data_path='all_data'
+    #dir='pitch_prob'
+    onlyfiles = [ f for f in listdir(path) if f.endswith(".tab")]
+    outdir='syl_csv_norm'
+    #print onlyfiles
+    for file_pitch in onlyfiles:
+        inputfile=path+'/'+file_pitch
+        print inputfile
+        first_name=file_pitch.split('.tab')[0]
+        first_name=first_name.split('_')[0]
+        phons_file=data_path +'/'+first_name+'.phons'
+        outname=outdir+'/'+first_name+'_voiced.csv'
+        time,pitch=read_pitch(inputfile)
+        timestamps,xt,labels=get_annos(phons_file)
+        pv=extract_syl(timestamps,time,pitch)
+        append_syl(pv,outname)
+        
 
 
 
 if __name__=="__main__":
-	main()
+    main()
 

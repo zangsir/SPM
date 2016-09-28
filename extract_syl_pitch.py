@@ -59,6 +59,10 @@ def extract_syl(timestamps,time,pitch):
 
 #append to file
 def append_syl(pv,outname):
+    g=open(outname,'w')
+    g.write('')
+    g.close
+    
     f=open(outname,'a')
     for row in pv:
         line=','.join(row)

@@ -14,6 +14,7 @@ def get_speaker_mean(speaker,path):
     all_pitch=[]
     for file_pitch in onlyfiles:
         time,pitch=get_vec_noext(path+file_pitch)
+
         pitch_float=[float(i) for i in pitch]
         all_pitch.extend(pitch_float[:])
     return np.mean(all_pitch)
@@ -23,7 +24,7 @@ def normalize(pitch,spk_mean):
     """let's normalize one file for now"""
     #normalize,log,downsample,smooth
     #for this speaker, normalize all files of this spk
-    
+    #print pitch[:100],'here'
     pitch_float=[float(i) for i in pitch]
     pitch=np.array(pitch_float)
     norm_pitch=pitch-spk_mean
@@ -47,6 +48,7 @@ def get_all_speaker(train_path):
 
 
 def get_vec_noext(file):
+    """don't get extrapolated values"""
     time=[]
     pitch=[]
     f=open(file,'r').read().split('\n')
@@ -69,33 +71,35 @@ def test_plot(pitch):
 
 
 def main():
-    train_path='MacAir-orig-data/cmn_phonetic_segmentation_tone/data/test/'
+    train_path='all_data/'
     all_speaker=get_all_speaker(train_path)
     pitch_path='procd_pitch/'
     #print onlyfiles
     for speaker in all_speaker:
         #working with one speaker
         spk_mean=get_speaker_mean(speaker,pitch_path)
-        print speaker
+        print speaker+'mean:'+str(spk_mean)
         #print spk_mean
         #normalize,log,downsample,smooth
         #test with a file of this speaker
         #in a real situation, you'll get all files of the speaker, and call normalize and save them one by one.
         onlyfiles = [ f for f in listdir(pitch_path) if f.startswith(speaker) and f.endswith('.tab')]
-        rand_files=random.sample(onlyfiles,2)
+        rand_files=random.sample(onlyfiles,1)
         #testing using rand_files, otherwise use onlyfiles 
         testing=False
         if testing:
         
             for file_pitch in rand_files:
-                norm_pitch=normalize(pitch_path+file_pitch,spk_mean)
+                print file_pitch
+                
                 time,pitch=get_vec_noext(pitch_path+file_pitch)
+                norm_pitch=normalize(pitch,spk_mean)
                 test_plot(pitch)
                 test_plot(norm_pitch)
 
         else:
             for file_pitch in onlyfiles:
-                print file_pitch
+                #print file_pitch
                 file_name=file_pitch.split('_proc')[0]
                 outname=file_name+'_norm.tab'
                 outpath='norm_pitch/'

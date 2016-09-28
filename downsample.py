@@ -63,6 +63,7 @@ def plot_matrix_resample(pv,num_per_row,filename):
 
 #(not exactly)equidistant sampling
 def downsample_mix(vec,comp_len):
+    #print vec[:10]
     orig_len=len(vec)
     a,b=int(math.floor(len(vec)/float(comp_len))),int(math.ceil(len(vec)/float(comp_len)))
     #print a,b
@@ -188,27 +189,56 @@ def demo(mode,pv,num_per_row,filename):
 def main():
     global plot_dir
     plot_dir='plots'
-    path='syl_csv'
+    path='syl_csv_norm'
+    #path='test-small'
     #dir='pitch_prob'
     onlyfiles = [ f for f in listdir(path) if f.endswith(".csv")]
     #print onlyfiles
-    num_file=4
-    SEED = 948
-    random.seed(SEED)
-    rand_files=random.sample(onlyfiles,num_file)
-    print rand_files
-    for file_pitch in rand_files:
+    demo=False
+    if demo:
+        num_file=4
+        SEED = 948
+        random.seed(SEED)
+        rand_files=random.sample(onlyfiles,num_file)
+        print rand_files
+        for file_pitch in rand_files:
+            #pv is a vector that collects all syllable contours within one file which is a sentence of multiple syllables
+            pv=[]
+            inputfile=path+'/'+file_pitch
+            f=open(inputfile,'r').read().split('\n')
+            for syl in f:
+                if syl!='':
+                    pv.append(syl.split(','))
+            print 'pv generated...'
+            demo('ave',pv,2,file_pitch)
+            demo('mix',pv,2,file_pitch)
+            demo('res',pv,2,file_pitch)
+    else:
+        open('downsample_syl.csv','w').close()
+        for file_pitch in onlyfiles:
+            #print file_pitch
+            pv=[]
+            inputfile=path+'/'+file_pitch
+            f=open(inputfile,'r').read().split('\n')
+            for syl in f:
+                if syl!='':
+                    pv.append(syl.split(','))
+            #print 'pv generated...'
+            #print pv
+            
+            f=open('downsample_syl.csv','a')
 
-        pv=[]
-        inputfile=path+'/'+file_pitch
-        f=open(inputfile,'r').read().split('\n')
-        for syl in f:
-            if syl!='':
-                pv.append(syl.split(','))
-        print 'pv generated...'
-        demo('ave',pv,2,file_pitch)
-        demo('mix',pv,2,file_pitch)
-        demo('res',pv,2,file_pitch)
+            for p in pv:
+                ts=p[:-1]
+                if len(ts)==0:
+                    print "WARNING:error in data file in "+file_pitch
+                    continue
+                tsd=downsample_mix(ts,30)
+                line=','.join(tsd)
+                f.write(line+','+p[-1]+'\n')
+            f.close()
+
+
 
 
 if __name__=="__main__":

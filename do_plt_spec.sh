@@ -1,1 +1,1 @@
-python plot_spectro.py pitch/pitcCHJ000019.tab test/CHJ000019.phons test/CHJ000019.wav
+python plot_spectro.py pitch/pitcCHJ000010.tab all_data/CHJ000010.phons all_data/CHJ000010.wav

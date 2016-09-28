@@ -26,7 +26,7 @@ def normalize(pitch,spk_mean):
     
     pitch_float=[float(i) for i in pitch]
     pitch=np.array(pitch_float)
-    norm_pitch=pitch/spk_mean
+    norm_pitch=pitch-spk_mean
     #log_pitch=np.log(norm_pitch)
     #down_pitch=downsample_mix(log_pitch,30)
     return norm_pitch

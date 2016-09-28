@@ -76,7 +76,7 @@ def main():
     #print onlyfiles
     for file_pitch in onlyfiles:
         inputfile=path+'/'+file_pitch
-        print inputfile
+        #print inputfile
         first_name=file_pitch.split('.tab')[0]
         first_name=first_name.split('_')[0]
         phons_file=data_path +'/'+first_name+'.phons'

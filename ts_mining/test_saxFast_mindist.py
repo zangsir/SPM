@@ -1,13 +1,13 @@
 
 # MIN_DIST demo
-
+print "the result obtained from these tests should be the same as if you run it on the original SAX implementation in Matlab"
 from saxpyFast import *
 
 s=SAX(alphabetSize = 4, wordSize = 8, windowSize = 32)
 table = s.build_dist_table()
 # print table
 
-print '=========='
+print '========== test the dist matrix given symbolic vectors as input'
 
 sA = [3,4,2,1,1,3,4,2]
 sB = [1,1,3,4,3,1,1,4]
@@ -24,7 +24,7 @@ sB = (sB - np.mean(sB))/np.std(sB,ddof=1)
 
 print sA
 print sB
-print "+++++++++++++++"
+print "+++++++++++++++ test the entire pipeline of first converting to SAX symbols from raw TS and then doing MIN_DIST"
 saxA, pA = s.to_letter_rep(sA)
 saxB, pB = s.to_letter_rep(sB)
 

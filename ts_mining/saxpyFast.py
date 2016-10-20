@@ -43,7 +43,6 @@ class SAX(object):
                             }
         self.beta = self.breakpoints[self.alphabetSize]
         self.build_dist_table()
-        self.scalingFactor = 1
 
 
     def to_letter_rep(self, x):
@@ -157,13 +156,3 @@ class SAX(object):
                 dist_matrix[j,i] = dist_matrix[i, j]
         return dist_matrix
 
-
-
-    def batch_compare(self, xStrings, refString):
-        return [self.compare_strings(x, refString) for x in xStrings]
-
-    def set_scaling_factor(self, scalingFactor):
-        self.scalingFactor = scalingFactor
-
-    def set_window_size(self, windowSize):
-        self.windowSize = windowSize

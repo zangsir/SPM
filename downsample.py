@@ -14,8 +14,6 @@ def downsample_averaging(ts):
     #print len(ts)/R
     pad_size = math.ceil(float(b.size)/R)*R - b.size
     b_padded = np.append(b, np.zeros(pad_size)*np.NaN)
-    #print b_padded.shape
-    #=> (9,)
     result=scipy.nanmean(b_padded.reshape(-1,R), axis=1)
     return result[:30]
 
@@ -190,11 +188,17 @@ def main():
     global plot_dir
     plot_dir='plots'
     path='syl_csv_norm'
+    
     #path='test-small'
     #dir='pitch_prob'
     onlyfiles = [ f for f in listdir(path) if f.endswith(".csv")]
     #print onlyfiles
     demo=False
+    no_neutral=True
+    if no_neutral:
+        outfile='downsample_syl_noneut.csv'
+    else:
+        outfile='downsample_syl.csv'
     if demo:
         num_file=4
         SEED = 948
@@ -214,7 +218,7 @@ def main():
             demo('mix',pv,2,file_pitch)
             demo('res',pv,2,file_pitch)
     else:
-        open('downsample_syl.csv','w').close()
+        open(outfile,'w').close()
         for file_pitch in onlyfiles:
             #print file_pitch
             pv=[]
@@ -226,15 +230,20 @@ def main():
             #print 'pv generated...'
             #print pv
             
-            f=open('downsample_syl.csv','a')
+            f=open(outfile,'a')
 
             for p in pv:
                 ts=p[:-1]
                 if len(ts)==0:
                     print "WARNING:error in data file in "+file_pitch
                     continue
+                if no_neutral:
+                    if p[-1]=='0':
+                        print '0 skipped'
+                        continue
                 tsd=downsample_mix(ts,30)
                 line=','.join(tsd)
+
                 f.write(line+','+p[-1]+'\n')
             f.close()
 

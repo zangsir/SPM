@@ -1,0 +1,1 @@
+python plot_spectro.py pitch/pitcCHJ000010.tab all_data/CHJ000010.phons all_data/CHJ000010.wav

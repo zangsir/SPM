@@ -16,7 +16,8 @@ def get_speaker_mean(speaker,path):
         time,pitch=get_vec_noext(path+file_pitch)
 
         pitch_float=[float(i) for i in pitch]
-        all_pitch.extend(pitch_float[:])
+        pitch_log=np.log2(pitch_float)
+        all_pitch.extend(pitch_log[:])
     return np.mean(all_pitch)
 
 
@@ -27,7 +28,8 @@ def normalize(pitch,spk_mean):
     #print pitch[:100],'here'
     pitch_float=[float(i) for i in pitch]
     pitch=np.array(pitch_float)
-    norm_pitch=pitch-spk_mean
+    log_pitch=np.log2(pitch)
+    norm_pitch=log_pitch-spk_mean
     #log_pitch=np.log(norm_pitch)
     #down_pitch=downsample_mix(log_pitch,30)
     return norm_pitch

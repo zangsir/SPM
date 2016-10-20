@@ -19,11 +19,12 @@ def find_lt(a, x):
 
 
 def get_annos(phons_file):
+    #input could be phons or qphons file
     g=open(phons_file,'r').read().split('\n')
     timestamps=[]
     for line in g:
         l=line.split()
-        if line!='':
+        if line!='' and not line.startswith('begin'):
             timestamps.append(l)
     xt=[]
     labels=[]

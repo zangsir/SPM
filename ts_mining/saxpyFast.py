@@ -90,14 +90,14 @@ class SAX(object):
             PAA = x
         else:
             if windowSize%wordSize!=0:
-                print 'case1'
+                #print 'case1'
                 temp = np.zeros((wordSize,windowSize))
                 for j in xrange(wordSize):
                     temp[j,:] = x
                 expanded_sub_section = np.ndarray.flatten(temp,'F')
                 PAA = np.mean(np.reshape(expanded_sub_section, (wordSize, windowSize)).transpose(),axis=0)
             else:
-                print 'case2'
+                #print 'case2'
                 win_size = windowSize/wordSize
                 expanded_sub_section = np.ndarray.flatten(x, 'F')
                 PAA = np.mean(np.reshape(expanded_sub_section,(wordSize, win_size)).transpose(), axis = 0)
@@ -127,7 +127,7 @@ class SAX(object):
             return
         dist_matrix = self.build_dist_table()
         compression_ratio = float(self.windowSize) / self.wordSize
-        print 'real sA:',sA
+        #print 'real sA:',sA
         mindist = np.sqrt(compression_ratio * np.sum(dist_matrix[sA-1, sB-1]))
 
         return mindist

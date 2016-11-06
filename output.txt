@@ -1,0 +1,168 @@
+#Database version
+PS C:\Users\shuo\Downloads\MK_code\MK\Database Version> .\mk_d.exe d.txt 1000 1024 10 1
+>>
+
+Number of Time Series : 1000
+Length of Each Time Series : 1024
+
+Data Have been Read and Normalized
+
+
+The 182th Time Series is chosen as 0th reference
+New best-so-far is 51.675656 and (0 , 182) are the new motif pair
+New best-so-far is 43.365072 and (1 , 182) are the new motif pair
+New best-so-far is 42.339938 and (6 , 182) are the new motif pair
+New best-so-far is 36.143474 and (8 , 182) are the new motif pair
+New best-so-far is 33.980398 and (12 , 182) are the new motif pair
+New best-so-far is 33.954997 and (15 , 182) are the new motif pair
+New best-so-far is 33.544129 and (24 , 182) are the new motif pair
+New best-so-far is 32.220500 and (46 , 182) are the new motif pair
+New best-so-far is 30.892262 and (48 , 182) are the new motif pair
+New best-so-far is 30.839406 and (66 , 182) are the new motif pair
+New best-so-far is 28.188362 and (71 , 182) are the new motif pair
+New best-so-far is 27.434949 and (80 , 182) are the new motif pair
+New best-so-far is 27.130684 and (231 , 182) are the new motif pair
+New best-so-far is 23.667995 and (428 , 182) are the new motif pair
+
+The 171th Time Series is chosen as 1th reference
+New best-so-far is 21.469912 and (695 , 171) are the new motif pair
+
+The 75th Time Series is chosen as 2th reference
+New best-so-far is 12.617564 and (4 , 75) are the new motif pair
+New best-so-far is 11.473529 and (67 , 75) are the new motif pair
+
+The 70th Time Series is chosen as 3th reference
+New best-so-far is 10.235848 and (851 , 70) are the new motif pair
+
+The 997th Time Series is chosen as 4th reference
+
+The 20th Time Series is chosen as 5th reference
+
+The 13th Time Series is chosen as 6th reference
+
+The 31th Time Series is chosen as 7th reference
+
+The 60th Time Series is chosen as 8th reference
+
+The 404th Time Series is chosen as 9th reference
+
+References are picked and Dist has been Computed
+
+Orderings have been Computed and Search has begun
+
+New best-so-far is 6.468814 and (265 , 261) are the new motif pair
+New best-so-far is 6.206468 and (924 , 538) are the new motif pair
+New best-so-far is 5.866640 and (230 , 777) are the new motif pair
+
+
+Final Motif is the pair ( 230, 777 ) and the Motif distance is 5.866640
+
+Execution Time was : 2.414000 seconds
+PS C:\Users\shuo\Downloads\MK_code\MK\Database Version>
+
+
+
+
+
+============================================================================================================ 
+#Subsequence version
+
+PS C:\Users\shuo\Downloads\MK_code\MK\Subsequence version> .\mk_l.exe s.txt 10000 128 128 10 1
+>>
+
+Length of the Time Series : 10000
+Length of Subsequences : 128
+
+Data Have been Read and Normalized
+
+
+The 4024th subsequence is chosen as 0th reference
+New best-so-far is 11.673263 and (0 , 4024) are the new motif pair
+New best-so-far is 11.564861 and (1 , 4024) are the new motif pair
+New best-so-far is 11.434299 and (2 , 4024) are the new motif pair
+New best-so-far is 11.321176 and (3 , 4024) are the new motif pair
+New best-so-far is 11.228063 and (4 , 4024) are the new motif pair
+New best-so-far is 11.173594 and (5 , 4024) are the new motif pair
+New best-so-far is 11.155430 and (6 , 4024) are the new motif pair
+New best-so-far is 11.145326 and (49 , 4024) are the new motif pair
+New best-so-far is 11.068818 and (304 , 4024) are the new motif pair
+New best-so-far is 10.969630 and (305 , 4024) are the new motif pair
+New best-so-far is 10.941082 and (306 , 4024) are the new motif pair
+New best-so-far is 9.942848 and (524 , 4024) are the new motif pair
+New best-so-far is 8.973292 and (525 , 4024) are the new motif pair
+New best-so-far is 8.156955 and (526 , 4024) are the new motif pair
+New best-so-far is 7.545400 and (527 , 4024) are the new motif pair
+New best-so-far is 7.161498 and (528 , 4024) are the new motif pair
+New best-so-far is 7.003260 and (529 , 4024) are the new motif pair
+New best-so-far is 6.739059 and (2270 , 4024) are the new motif pair
+New best-so-far is 6.490609 and (2271 , 4024) are the new motif pair
+New best-so-far is 6.430126 and (2272 , 4024) are the new motif pair
+
+The 2030th subsequence is chosen as 1th reference
+
+The 9169th subsequence is chosen as 2th reference
+New best-so-far is 6.010856 and (276 , 9169) are the new motif pair
+New best-so-far is 5.638878 and (277 , 9169) are the new motif pair
+New best-so-far is 5.367566 and (278 , 9169) are the new motif pair
+New best-so-far is 5.208798 and (279 , 9169) are the new motif pair
+New best-so-far is 5.179367 and (280 , 9169) are the new motif pair
+New best-so-far is 5.157531 and (1681 , 9169) are the new motif pair
+New best-so-far is 5.046811 and (7169 , 9169) are the new motif pair
+New best-so-far is 4.598452 and (7170 , 9169) are the new motif pair
+New best-so-far is 4.274346 and (7171 , 9169) are the new motif pair
+New best-so-far is 4.130643 and (7172 , 9169) are the new motif pair
+
+The 9310th subsequence is chosen as 3th reference
+
+The 7151th subsequence is chosen as 4th reference
+New best-so-far is 3.886739 and (7721 , 7151) are the new motif pair
+New best-so-far is 3.304765 and (7722 , 7151) are the new motif pair
+New best-so-far is 2.901131 and (7723 , 7151) are the new motif pair
+New best-so-far is 2.728976 and (7724 , 7151) are the new motif pair
+
+The 387th subsequence is chosen as 5th reference
+
+The 1661th subsequence is chosen as 6th reference
+
+The 677th subsequence is chosen as 7th reference
+
+The 9872th subsequence is chosen as 8th reference
+
+The 6465th subsequence is chosen as 9th reference
+
+References are picked and Dist has been Computed
+
+Orderings have been Computed and Search has begun
+
+New best-so-far is 2.700987 and (2912 , 5653) are the new motif pair
+New best-so-far is 2.558517 and (2913 , 5654) are the new motif pair
+New best-so-far is 2.452982 and (2914 , 5655) are the new motif pair
+New best-so-far is 2.381922 and (2915 , 5656) are the new motif pair
+New best-so-far is 2.346876 and (2916 , 5657) are the new motif pair
+New best-so-far is 2.236426 and (5656 , 2916) are the new motif pair
+New best-so-far is 2.207679 and (5658 , 2918) are the new motif pair
+New best-so-far is 2.199990 and (5657 , 2917) are the new motif pair
+
+
+Final Motif is the pair ( 5657, 2917 ) and the Motif distance is 2.199990
+
+Execution Time was : 2.049000 seconds
+PS C:\Users\shuo\Downloads\MK_code\MK\Subsequence version>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,5 +6,6 @@
 -github(maybe already have it)
 -create user?
 -minecraft python
+-just
 
 

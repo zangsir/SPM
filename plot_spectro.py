@@ -8,7 +8,7 @@ from scipy.interpolate import interp1d
 from scipy.io.wavfile import read
 
 #sample usage:
-#python plot_spectro.py pitch/pitcCHX000040.tab test/CHX000040.phons test/CHX000040.wav 
+#python plot_spectro.py pitch/pitcCHJ000038.tab all_data/CHJ000038.phons all_data/CHJ000038.wav
 
 def find_lt(a, x):
     'Find rightmost value less than x'
@@ -69,8 +69,8 @@ def plot_spectro(time,pitch,my_xticks,timestamps,audio_file,plotname):
     plt.scatter(time,pitch)
     for l in timestamps:
         #print l
-        plt.plot((l[0],l[0]),(50,1500),'k-')
-    plt.ylim([50,1500])
+        plt.plot((l[0],l[0]),(50,300),'k-')
+    plt.ylim([50,300])
     plt.savefig(plotname+'-spectro.pdf')
 
 
@@ -132,6 +132,7 @@ def do_plot(audio_file,pitch_tab_file,phons_file):
 
 
 def pitch_proc_chain(pitch_tab_file,phons_file):
+    #in pitch preprocess, you need phons file because you want to filter out the unvoiced pitch estimation at first, then interpolate back those.
     timestamps,xt,labels=get_annos(phons_file)
     #get some time and pitch files
     b=timestamps[0][0]

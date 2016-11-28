@@ -187,18 +187,18 @@ def demo(mode,pv,num_per_row,filename):
 def main():
     global plot_dir
     plot_dir='plots'
-    path='syl_csv_norm'
+    path='downsample_ngrams'
     
     #path='test-small'
     #dir='pitch_prob'
     onlyfiles = [ f for f in listdir(path) if f.endswith(".csv")]
     #print onlyfiles
     demo=False
-    no_neutral=True
+    no_neutral=False
     if no_neutral:
         outfile='downsample_syl_noneut.csv'
     else:
-        outfile='downsample_syl.csv'
+        outfile='downsample_syl_tri.csv'
     if demo:
         num_file=4
         SEED = 948

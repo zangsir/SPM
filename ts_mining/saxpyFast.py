@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 
-import os
 import numpy as np
-import math
-
 
 class SAX(object):
     """
@@ -15,7 +12,7 @@ class SAX(object):
     #windowSize is the size of an analysis window for converting to SAX. This is useful in the sliding window case when you slide the window across a very long time-series. If the input is pre-extracted subsequence (e.g., size 30 per ts), then put windwoSize as 30 (the same as the length of subsequence) so there is effectively no sliding window. 
     def __init__(self, windowSize = 30, wordSize = 8, alphabetSize = 7, epsilon = 1e-6):
 
-        if alphabetSize < 3 or alphabetSize > 20:
+        if alphabetSize < 2 or alphabetSize > 20:
             raise DictionarySizeIsNotSupported()
         self.wordSize = wordSize
         self.windowSize = windowSize
@@ -145,7 +142,7 @@ class SAX(object):
         and will have identical values.
         """
         alphabet_size = self.alphabetSize
-        print 'alpha size:',alphabet_size
+        #print 'alpha size:',alphabet_size
         dist_matrix = np.zeros((alphabet_size, alphabet_size))
         for i in xrange(alphabet_size):
             # the min_dist for adjacent symbols are 0, so we start with i+2

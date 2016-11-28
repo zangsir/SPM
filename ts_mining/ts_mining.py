@@ -68,8 +68,8 @@ def get_data(file):
 def compute_MAP_score(Q, data, dist_measure):
     """Q is the set of queries """
     query_result_log = []
-    print "len Q:",len(Q)
-    print "len data:",len(data)
+    #print "len Q:",len(Q)
+    #print "len data:",len(data)
     for query in Q:
         counter = 0
         query_label = query[-1]
@@ -79,14 +79,16 @@ def compute_MAP_score(Q, data, dist_measure):
         Ns = range(1, max_N)
         precision_log = []
         for N in Ns:
+            #print N
             counter += 1
             prec, rec, f1 = prec_recall(query_label, labels_ranked, N)
-            # if counter % 1000 == 0:
-            # print "RESULTS:", prec, rec, f1
+            #if counter % 5 == 0:
+                #print "RESULTS:", prec, rec, f1
             precision_log.append(prec)
+        #print precision_log
         average_precision = np.mean(precision_log)
         query_result_log.append(average_precision)
-    # print query_result_log[:10]
+    #print query_result_log
     MAP = np.mean(query_result_log)
     return MAP
 
@@ -99,7 +101,7 @@ def qbc_explore(data):
     data_query = random.choice(data)
     data_query = ts
     query_label = data_query[-1]
-    print query_label,
+    #print query_label,
 
     top_ranked, label_dict, labels_ranked, all_dist = qbc(data_rand, data_query, "euclidean")
     total_rel = get_total_relevant(query_label, labels_ranked)
@@ -107,7 +109,7 @@ def qbc_explore(data):
     Ns = range(1, max_N)
 
     # Ns = [2 * total_rel if total_rel < 10 else total_rel]
-    print total_rel
+    #print total_rel
     # one thought is using number of expected tones for this tone category in the dataset.
     # such as near 25% for tone 1 if tone 1 is indeed 0.25 of the total data set.
     f1_log = []
@@ -132,7 +134,8 @@ def qbc_test(data,dist_measure):
 
 
 def main():
-    fileName_30 = '../downsample_syl_noneut.csv'
+    #fileName_30 = '../downsample_syl_noneut.csv'
+    fileName_30 = '../downsample_syl_tri.csv'
     # file_orig='../syl_norm.csv' #for sax
     data = np.genfromtxt(fileName_30, delimiter=',')
     # data_orig,labels=get_data(file_orig)
@@ -146,8 +149,13 @@ def main():
         print dist_measure1
         qbc_test(data,dist_measure1)
         print '====================='
+        import time
+        start_time = time.time()
+
+
         print dist_measure2
         qbc_test(data,dist_measure2)
+        print("--- %s seconds ---" % (time.time() - start_time))
 
     else:
         # run_kmeans_euclid(data)

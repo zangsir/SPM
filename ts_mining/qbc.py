@@ -1,6 +1,6 @@
 # query by content module
 import numpy as np
-from saxpy import SAX
+from saxpyFast import SAX
 import sys
 
 
@@ -11,11 +11,11 @@ def euclid_dist(t1, t2):
     return np.sqrt(sum((t1 - t2) ** 2))
 
 
-def min_dist(ts1, ts2, word, alpha, eps=0.000001):
-    s = SAX(word, alpha, eps)
-    (ts1String, ts1Indices) = s.to_letter_rep(ts1)
-    (ts2String, ts2Indices) = s.to_letter_rep(ts2)
-    mindist = s.compare_strings(ts1String, ts2String)
+def compute_min_dist(ts1, ts2, word, alpha):
+    s = SAX(windowSize=30, wordSize=word, alphabetSize=alpha)
+    sax_ts1, pointers1 = s.to_letter_rep(ts1)
+    sax_ts2, pointers2 = s.to_letter_rep(ts2)
+    mindist = s.min_dist(sax_ts1[0], sax_ts2[0])
     return mindist
 
 
@@ -23,7 +23,7 @@ def compute_dist(ts1, ts2, dist_measure):
     if dist_measure == "euclidean":
         return euclid_dist(ts1, ts2)
     elif dist_measure == "mindist":
-        return min_dist(ts1, ts2, 15, 10)
+        return compute_min_dist(ts1, ts2, 15, 10)
     else:
         print "distance measure not found: error"
         sys.exit()

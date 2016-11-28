@@ -16,9 +16,11 @@ for phons_file in onlyfiles:
     pitch_tab_file=pitch_path+'/'+'pitc'+first_name+'.tab'
     interp_time,interp_pitch=pitch_proc_chain(pitch_tab_file,phons_file)
     outname=first_name+"_proc.tab"
+    #write header
     g=open(outdir+'/'+outname,'w')
     g.write('time\tpitch\n')
     g.close()
+    #write time and pitch rows
     f=open(outdir+'/'+outname,'a')
     for i in range(len(interp_time)):
         f.write(str(interp_time[i])+'\t'+str(interp_pitch[i])+'\n')

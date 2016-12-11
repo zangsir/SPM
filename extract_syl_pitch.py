@@ -1,3 +1,4 @@
+#syllable unigram extraction
 #this extracts only voiced part, dropping unvoiced part 
 
 #input is preprocessed pitch file(.tab) and phons file

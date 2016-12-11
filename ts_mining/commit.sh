@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+##### MUST SUPPLY A COMMIT MESSAGE!!!!!
 cp ~/Desktop/speech-exp-diuss/*.py *.sh *.praat *.ipynb ~/repo/SPM
 cp ~/Desktop/speech-exp-diuss/ts_mining/*.py *.sh ~/repo/SPM/ts_mining/
 cd ~/repo/SPM

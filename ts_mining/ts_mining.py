@@ -128,15 +128,22 @@ def qbc_explore(data):
 def qbc_test(data,dist_measure):
     test_size = 200
     query_size = 50
+    SEED = 23
+    random.seed(SEED)
     data_rand = random.sample(data, test_size)
     Q = random.sample(data, query_size)
+    print "SEED:",SEED
     print compute_MAP_score(Q, data_rand, dist_measure)
 
 
 def main():
-    #fileName_30 = '../downsample_syl_noneut.csv'
-    fileName_30 = '../downsample_syl_tri.csv'
+    print "+++++++++++++++++++"
+    fileName_30 = '../csv/downsample_syl_noneut.csv'
+
+    #fileName_30 = '../csv/downsample_syl_noneut_10_5.csv'
+    #fileName_30 = '../csv/downsample_syl_tri.csv'
     # file_orig='../syl_norm.csv' #for sax
+    print "data:",fileName_30
     data = np.genfromtxt(fileName_30, delimiter=',')
     # data_orig,labels=get_data(file_orig)
     # data_orig has original dimensions for each time series, and data has only 30 points

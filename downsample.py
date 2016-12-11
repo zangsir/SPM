@@ -3,24 +3,24 @@ from scipy import signal
 import math, scipy
 from extract_syl_pitch import *
 import random
-
+import sys
 
 #padding and averaging then extract first 30 points
-def downsample_averaging(ts):
+def downsample_averaging(ts,comp_len=30):
     tsf=[float(i) for i in ts]
-    R=math.floor(len(ts)/30.0)
+    R=math.floor(len(ts)/comp_len)
     b=np.array(tsf)
     #print R
     #print len(ts)/R
     pad_size = math.ceil(float(b.size)/R)*R - b.size
     b_padded = np.append(b, np.zeros(pad_size)*np.NaN)
     result=scipy.nanmean(b_padded.reshape(-1,R), axis=1)
-    return result[:30]
+    return result[:comp_len]
 
 
 
 #resample
-def plot_matrix_resample(pv,num_per_row,filename):    
+def plot_matrix_resample(pv,num_per_row,filename,comp_len=30):    
     #num_per_row=2
     #num_file=len(onlyfiles)
 
@@ -41,11 +41,11 @@ def plot_matrix_resample(pv,num_per_row,filename):
     for p in pv:
         #print i,j
         ts=p[:-1]
-        x = np.linspace(0,30, len(ts))
-        xr = np.linspace(0,30,30)
+        x = np.linspace(0,comp_len, len(ts))
+        xr = np.linspace(0,comp_len,comp_len)
         #plt.plot(x,ts,'gx')
     
-        z=signal.resample(ts,30)
+        z=signal.resample(ts,comp_len)
         #plt.plot(xr,z,'ro-')
     
         axarr[i, j].plot(x, ts, 'bx', xr, z, 'ro')
@@ -60,13 +60,13 @@ def plot_matrix_resample(pv,num_per_row,filename):
     print 'saved resampled plots '
 
 #(not exactly)equidistant sampling
-def downsample_mix(vec,comp_len):
+def downsample_mix(vec,comp_len=30):
     #print vec[:10]
     orig_len=len(vec)
     a,b=int(math.floor(len(vec)/float(comp_len))),int(math.ceil(len(vec)/float(comp_len)))
     #print a,b
     if a!=b:
-        x=(orig_len-30*b)/(a-b)
+        x=(orig_len-comp_len*b)/(a-b)
         y=comp_len-x
     else:
         x=y=comp_len/2
@@ -88,7 +88,7 @@ def downsample_mix(vec,comp_len):
     return new_vec
 
 #examing all ts, each one plot
-def plot_matrix_average(pv,num_per_row,filename):    
+def plot_matrix_average(pv,num_per_row,filename,comp_len=30):    
     #num_per_row=2
     #num_file=len(onlyfiles)
     
@@ -108,11 +108,11 @@ def plot_matrix_average(pv,num_per_row,filename):
     for p in pv:
         #print i,j
         ts=p[:-1]
-        x = np.linspace(0,30, len(ts), endpoint=False)
-        xr = np.linspace(0,30,30)
+        x = np.linspace(0,comp_len, len(ts), endpoint=False)
+        xr = np.linspace(0,comp_len,comp_len)
         #plt.plot(x,ts,'gx')
     
-        z=downsample_averaging(ts)
+        z=downsample_averaging(ts,comp_len)
         #plt.plot(xr,z,'ro-')
     
         axarr[i, j].plot(x, ts, 'bx', xr, z, 'ro')
@@ -127,7 +127,7 @@ def plot_matrix_average(pv,num_per_row,filename):
     f.savefig(plot_dir+'/'+filename+"_ave.pdf")
     print 'saved averaged plots '
 
-def plot_matrix_mix(pv,num_per_row,filename):    
+def plot_matrix_mix(pv,num_per_row,filename,comp_len=30):    
     #num_per_row=2
     #num_file=len(onlyfiles)
     
@@ -148,12 +148,12 @@ def plot_matrix_mix(pv,num_per_row,filename):
     for p in pv:
         #print i,j
         ts=p[:-1]
-        x = np.linspace(0,30, len(ts), endpoint=False)
-        xr = np.linspace(0,30,30)
+        x = np.linspace(0,comp_len, len(ts), endpoint=False)
+        xr = np.linspace(0,comp_len,comp_len)
         #plt.plot(x,ts,'gx')
     
         #z=downsample_averaging(ts)
-        z=downsample_mix(ts,30)
+        z=downsample_mix(ts,comp_len)
 
         #plt.plot(xr,z,'ro-')
     
@@ -171,38 +171,54 @@ def plot_matrix_mix(pv,num_per_row,filename):
     print 'saved mixed plots '
 
 
-def demo(mode,pv,num_per_row,filename):
+def demo(mode,pv,num_per_row,filename,comp_len=30):
     """mode is ave, mix, res"""
     if mode=='ave':
-        plot_matrix_average(pv,num_per_row,filename)
+        plot_matrix_average(pv,num_per_row,filename,comp_len)
 
     elif mode == 'mix':
-        plot_matrix_mix(pv,num_per_row,filename)
+        plot_matrix_mix(pv,num_per_row,filename,comp_len)
 
     elif mode == 'res':
-        plot_matrix_resample(pv,num_per_row,filename)
+        plot_matrix_resample(pv,num_per_row,filename,comp_len)
 
 
 
 def main():
     global plot_dir
     plot_dir='plots'
-    path='downsample_ngrams'
+    N=int(sys.argv[1])
+    smooth=sys.argv[2] 
+    ##for unigram:input path is a path containing all files
+    path='syl_csv_norm'
+    
+    ##for unigram smoothed:
+    #path='syl_csv_norm_smooth'
+    
+    #for ngrams path: contains only one file to be downsampled
+    path='downsample_ngrams_one'
+    #for unigram:30;bigram:60,trigram:90
+    
+    comp_len=30*N
+    
     
     #path='test-small'
     #dir='pitch_prob'
     onlyfiles = [ f for f in listdir(path) if f.endswith(".csv")]
     #print onlyfiles
-    demo=False
+    demo_mode=False
     no_neutral=False
     if no_neutral:
         outfile='downsample_syl_noneut.csv'
     else:
-        outfile='downsample_syl_tri.csv'
-    if demo:
-        num_file=4
-        SEED = 948
-        random.seed(SEED)
+	if smooth=='1':
+            outfile='downsample_syl_%s_smooth.csv'%N
+	else:
+	    outfile='downsample_syl_%s.csv'%N
+    if demo_mode:
+        num_file=1
+        #SEED = 948
+        #random.seed(SEED)
         rand_files=random.sample(onlyfiles,num_file)
         print rand_files
         for file_pitch in rand_files:
@@ -214,9 +230,9 @@ def main():
                 if syl!='':
                     pv.append(syl.split(','))
             print 'pv generated...'
-            demo('ave',pv,2,file_pitch)
-            demo('mix',pv,2,file_pitch)
-            demo('res',pv,2,file_pitch)
+            demo('ave',pv,2,file_pitch,comp_len)
+            demo('mix',pv,2,file_pitch,comp_len)
+            demo('res',pv,2,file_pitch,comp_len)
     else:
         open(outfile,'w').close()
         for file_pitch in onlyfiles:
@@ -239,9 +255,9 @@ def main():
                     continue
                 if no_neutral:
                     if p[-1]=='0':
-                        print '0 skipped'
+                        print '0 skipped(neural tone)'
                         continue
-                tsd=downsample_mix(ts,30)
+                tsd=downsample_mix(ts,comp_len)
                 line=','.join(tsd)
 
                 f.write(line+','+p[-1]+'\n')

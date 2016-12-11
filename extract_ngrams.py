@@ -1,8 +1,21 @@
-#this script extracts n-grams out of unigram syl_norm_sil.csv. in order to only extract within sentence ngrams, we have a separator in that file indicating file split. 
+#this script extracts n-grams out of unigram syl_norm_split.csv. in order to only extract within sentence ngrams, we have a separator in that file indicating file split. 
 import sys
+ 
+#append to file
+def append_line(pv,outname):
+    g=open(outname,'w')
+    g.write('')
+    g.close
+
+    f=open(outname,'a')
+    for line in pv:
+        f.write(line+'\n')
+    f.close()
 
 n=int(sys.argv[1])
-unigram_file="syl_norm_split.csv"
+ndict={1:'unigram',2:'bigram',3:'trigram'}
+unigram_file="syl_norm_split_smooth.csv"
+output_file=sys.argv[2]
 #unigram_file="snapshot-uni.csv"
 sents=open(unigram_file,'r').read().split(',end\n')
 
@@ -30,10 +43,12 @@ for s in sents:
         ngram_line=ngram_data+","+ngram_label
         ngrams_agg.append(ngram_line)
         #print "=====",i,len(ngrams_agg)
-            
-print "|total",len(ngrams_agg)            
+                        
 
             
-#print "|total",len(ngrams_agg)            
-for i in ngrams_agg:
-    print i
+print "|total",len(ngrams_agg)            
+print 'starting writing to file...'
+#for i in ngrams_agg:
+#   print i
+
+append_line(ngrams_agg,output_file)

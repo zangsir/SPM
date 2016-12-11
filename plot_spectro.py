@@ -8,7 +8,7 @@ from scipy.interpolate import interp1d
 from scipy.io.wavfile import read
 
 #sample usage:
-#python plot_spectro.py pitch/pitcCHJ000038.tab all_data/CHJ000038.phons all_data/CHJ000038.wav
+#python plot_spectro.py pitch/pitcCHJ000001.tab all_data/CHJ000001.phons all_data/CHJ000001.wav
 
 def find_lt(a, x):
     'Find rightmost value less than x'

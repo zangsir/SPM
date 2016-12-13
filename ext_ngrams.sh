@@ -5,7 +5,7 @@
 
 #for motif discovery, ngrams should not have labels in the end (but you should keep a version with labels of course)
 
-#Each ngrams should be downsampled to N*30 dimensions
+#Each ngrams should be downsampled to N*30 dimensions(or not)
 
 #we want to be able to trace back each ngram to its recording. So ngrams data files should be written with other information in the csv file (append more columns), maybe like an ID or something that identifies the ‘CHJ00001’ for example.
 
@@ -46,7 +46,7 @@ fi
 
 
 
-
+echo 'concatenating unigrams...'
 python concat.py $unigramPath"/*.csv" $unigramAll
 wc -l $unigramAll
 
@@ -59,7 +59,7 @@ echo 'performing ngrams extraction...'
 #argument:N in ngrams
 
 
-python extract_ngrams.py $N $ngramsOutName
+python extract_ngrams.py $N $unigramAll $ngramsOutName
 mv downsample_ngrams_one/* downsample_ngrams_all/
 mv $ngramsOutName  downsample_ngrams_one/
 #downsample(note that non-neutral tone selection only happens at the downsample stage, not before)

@@ -200,6 +200,7 @@ def main():
     #for unigram:30;bigram:60,trigram:90
     
     comp_len=30*N
+    #comp_len=30
     
     
     #path='test-small'

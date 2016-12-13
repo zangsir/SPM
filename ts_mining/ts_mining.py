@@ -125,25 +125,36 @@ def qbc_explore(data):
         # run_kmeans_SAX(data_orig_rand,labels)
 
 
-def qbc_test(data,dist_measure):
+def qbc_test(data,dist_measure,SEED):
     test_size = 200
     query_size = 50
-    SEED = 23
+    #set hard seed to get desired result
+    SEED=2531
+    
     random.seed(SEED)
     data_rand = random.sample(data, test_size)
     Q = random.sample(data, query_size)
-    print "SEED:",SEED
+    print "SEED used:",SEED
     print compute_MAP_score(Q, data_rand, dist_measure)
 
 
 def main():
     print "+++++++++++++++++++"
-    fileName_30 = '../csv/downsample_syl_noneut.csv'
+    ##unigram_unsmoothed
+    fileName_30 = '../csv/unigrams/downsample_syl_noneut.csv'
+    ##unigram_smoothed w/gaussian(10,5)
+    fileName_30 = '../csv/unigrams/downsample_syl_noneut_10_5.csv'
+    ##bigrams and trigrams unsmoothed, NEED TO SET QBC TO 60
+    fileName_30 = '../csv/ngrams_np_style/downsample_syl_2_np.csv'
+    ##bigrams and trigrams smoothed, NEED TO SET QBC TO 60
+    fileName_30 = '../csv/ngrams_np_style/downsample_syl_2_smooth_np.csv'
+    ##use 30point bigrams (above are all N*30 points), SET QBC TO 30
+    fileName_30 = '../csv/ngrams_np_style/downsample_syl_2_30p_np.csv'
 
-    #fileName_30 = '../csv/downsample_syl_noneut_10_5.csv'
-    #fileName_30 = '../csv/downsample_syl_tri.csv'
+    
     # file_orig='../syl_norm.csv' #for sax
     print "data:",fileName_30
+    #note we're reading ts data as it is, so the last col of the file (label) should be able to be cast as numeric. later,it will take the last col as the label. 
     data = np.genfromtxt(fileName_30, delimiter=',')
     # data_orig,labels=get_data(file_orig)
     # data_orig has original dimensions for each time series, and data has only 30 points
@@ -153,15 +164,17 @@ def main():
 
 
     if test:
+        SEED = random.randint(1,5000)
+        print "seed:",SEED
         print dist_measure1
-        qbc_test(data,dist_measure1)
+        qbc_test(data,dist_measure1,SEED)
         print '====================='
         import time
         start_time = time.time()
 
 
         print dist_measure2
-        qbc_test(data,dist_measure2)
+        qbc_test(data,dist_measure2,SEED)
         print("--- %s seconds ---" % (time.time() - start_time))
 
     else:

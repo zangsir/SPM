@@ -14,8 +14,9 @@ def append_line(pv,outname):
 
 n=int(sys.argv[1])
 ndict={1:'unigram',2:'bigram',3:'trigram'}
-unigram_file="syl_norm_split_smooth.csv"
-output_file=sys.argv[2]
+unigram_file=sys.argv[2]
+#such as "syl_norm_split_smooth.csv"
+output_file=sys.argv[3]
 #unigram_file="snapshot-uni.csv"
 sents=open(unigram_file,'r').read().split(',end\n')
 
@@ -38,7 +39,7 @@ for s in sents:
             uni_label=unigs[i+j].split(',')[-2]
             data.extend(uni_data)
             labels.extend(uni_label)
-        ngram_label="_".join(labels)
+        ngram_label="".join(labels)
         ngram_data=",".join(data)
         ngram_line=ngram_data+","+ngram_label
         ngrams_agg.append(ngram_line)

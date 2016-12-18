@@ -5,7 +5,7 @@
 
 #for motif discovery, ngrams should not have labels in the end (but you should keep a version with labels of course)
 
-#Each ngrams should be downsampled to N*30 dimensions(or not)
+#Each ngrams should be downsampled to N*30 dimensions(or not, since exp. shows that the 30 point performs better than 60, for example, in bigram)
 
 #we want to be able to trace back each ngram to its recording. So ngrams data files should be written with other information in the csv file (append more columns), maybe like an ID or something that identifies the ‘CHJ00001’ for example.
 
@@ -31,14 +31,14 @@ N=$1
 smooth=$2
 if [ $smooth = 1 ]
 then
-	unigramPath="syl_csv_norm_whole_smooth"
-        unigramAll="syl_norm_split_smooth.csv"
-	ngramsOutName=$N'-grams_smooth.csv'
-	python smooth_ngrams.py
+    unigramPath="syl_csv_norm_whole_smooth"
+    unigramAll="syl_norm_split_smooth.csv"
+    ngramsOutName=$N'-grams_smooth.csv'
+    python smooth_ngrams.py
 else
-	unigramPath="syl_csv_norm_whole"
-	unigramAll="syl_norm_split.csv"
-	ngramsOutName=$N'-grams.csv'
+    unigramPath="syl_csv_norm_whole"
+    unigramAll="syl_norm_split.csv"
+    ngramsOutName=$N'-grams.csv'
 fi
 #concatenation into one file of variable length syllable pitch contours
 #this script resides in the syl_csv_norm_whole directory
@@ -70,7 +70,9 @@ mv $ngramsOutName  downsample_ngrams_one/
 #output file (option 1, for unigram only):'downsample_syl_noneut.csv'
 #output file (option 2, for ngrams):'downsample_syl_tri.csv' or _bi.csv
 echo 'downsampling...'
+#specify the length of downsampled vector
+comp_len=30
 #the second argument controls on or off of smoothing
-python downsample.py $N $smooth
+python downsample.py $N $smooth $comp_len
 ls -lt | head
 #then move your output file (one file) into csv/

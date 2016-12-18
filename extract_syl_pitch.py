@@ -75,7 +75,12 @@ def append_syl(pv,outname):
     g.close
 
     f=open(outname,'a')
-    for row in pv:
+    for i in range(len(pv)):
+        row=pv[i]
+        #append meta information
+        row.append(outname.split('.')[0])
+        row.append(str(i))
+
         line=','.join(row)
         f.write(line+'\n')
     f.close()
@@ -89,7 +94,7 @@ def main():
     #data_path='test_qphons'
     #dir='pitch_prob'
     onlyFiles = [ f for f in listdir(path) if f.endswith(".tab")]
-    outdir='syl_csv_norm'
+    outdir='syl_csv_norm_meta'
     #outdir='test_qphons'
     print onlyFiles
     for file_pitch in onlyFiles:

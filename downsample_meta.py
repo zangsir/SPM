@@ -211,10 +211,11 @@ def main():
     demo_mode=False
     no_neutral=False
     if no_neutral:
+        #this is just for non-neutral unigram ext.
         outfile='downsample_syl_noneut.csv'
     else:
         if smooth=='1':
-                outfile='downsample_syl_%s_smooth.csv'%N
+            outfile='downsample_syl_%s_smooth.csv'%N
         else:
             outfile='downsample_syl_%s.csv'%N
     if demo_mode:
@@ -237,6 +238,7 @@ def main():
             demo('res',pv,2,file_pitch,comp_len)
     else:
         open(outfile,'w').close()
+        count_error_file=0
         for file_pitch in onlyfiles:
             #print file_pitch
             pv=[]
@@ -251,19 +253,21 @@ def main():
             f=open(outfile,'a')
 
             for p in pv:
-                ts=p[:-1]
+                ts=p[:-3]
                 if len(ts)<comp_len:
-                    print "WARNING:error in data file in "+file_pitch
+                    #print "WARNING:error in data file in "+file_pitch
+                    count_error_file+=1
                     continue
                 if no_neutral:
-                    if p[-1]=='0':
+                    if p[-3]=='0':
                         print '0 skipped(neural tone)'
                         continue
                 tsd=downsample_mix(ts,comp_len)
                 line=','.join(tsd)
 
-                f.write(line+','+p[-1]+'\n')
+                f.write(line+','+p[-3]+','+p[-2]+','+p[-1]+'\n')
             f.close()
+        print "total file ignored:",count_error_file
 
 
 

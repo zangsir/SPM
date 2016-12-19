@@ -188,17 +188,32 @@ def main():
     global plot_dir
     plot_dir='plots'
     N=int(sys.argv[1])
-    smooth=sys.argv[2] 
+    smooth=int(sys.argv[2]) 
     comp_len=int(sys.argv[3])
+    mode=sys.argv[4]#voiced or whole
+
     ##for unigram:input path is a path containing all files
-    path='syl_csv_norm_meta'
+    if N==1:
+        if smooth==1:
+            if mode=="voiced":
+                path='syl_csv_norm_smooth'
+            elif mode=='whole':
+                path='syl_csv_norm_whole_smooth'
+        elif mode=='voiced':
+            path='syl_csv_norm_meta'
+        elif mode=='whole':
+            path='syl_csv_norm_whole_meta'
+        else:
+            print 'unknown mode'
+            sys.exit()
     
     ##for unigram smoothed:
-    #path='syl_csv_norm_smooth'
+    
     
     #for ngrams path: contains only one file to be downsampled
-    #path='downsample_ngrams_one'
-    #for unigram:30;bigram:60,trigram:90
+    elif N>1:
+        path='downsample_ngrams_one'
+    print 'path:',path
     
     #comp_len=30*N
     #comp_len=30
@@ -210,14 +225,25 @@ def main():
     #print onlyfiles
     demo_mode=False
     no_neutral=False
-    if no_neutral:
-        #this is just for non-neutral unigram ext.
-        outfile='downsample_syl_noneut.csv'
-    else:
-        if smooth=='1':
-            outfile='downsample_syl_%s_smooth.csv'%N
+    
+    if N==1:
+        if no_neutral:
+            #this is just for non-neutral unigram ext.
+            outfile='downsample_syl_noneut.csv'
         else:
-            outfile='downsample_syl_%s.csv'%N
+            if mode=='voiced':
+                outfile='donwsample_syl_voiced_meta_%s.csv' %comp_len
+            elif mode=='whole':
+                outfile='downsample_syl_whole_meta_%s.csv' %comp_len
+
+
+
+
+    elif N>1:
+        if smooth=='1':
+            outfile='downsample_syl_%s_smooth_meta_%s.csv'%(N,comp_len)
+        else:
+            outfile='downsample_syl_%s_meta_%s.csv'%(N,comp_len)
     if demo_mode:
         num_file=1
         #SEED = 948
@@ -253,7 +279,10 @@ def main():
             f=open(outfile,'a')
 
             for p in pv:
-                ts=p[:-3]
+                if mode=='voiced':
+                    ts=p[:-3]
+                elif mode=="whole":
+                    ts=p[:-4]
                 if len(ts)<comp_len:
                     #print "WARNING:error in data file in "+file_pitch
                     count_error_file+=1
@@ -264,8 +293,12 @@ def main():
                         continue
                 tsd=downsample_mix(ts,comp_len)
                 line=','.join(tsd)
+                if mode=="voiced":
+                    line_write=line+','+p[-3]+','+p[-2]+','+p[-1]+'\n'
+                elif mode=="whole":
+                    line_write=line+','+p[-4]+','+p[-3]+','+p[-2]+','+p[-1]+'\n'
 
-                f.write(line+','+p[-3]+','+p[-2]+','+p[-1]+'\n')
+                f.write(line_write)
             f.close()
         print "total file ignored:",count_error_file
 

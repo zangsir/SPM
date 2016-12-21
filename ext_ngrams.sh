@@ -36,9 +36,9 @@ then
     ngramsOutName=$N'-grams_smooth.csv'
     python smooth_ngrams.py
 else
-    unigramPath="syl_csv_norm_whole"
-    unigramAll="syl_norm_split.csv"
-    ngramsOutName=$N'-grams.csv'
+    unigramPath="syl_csv_norm_whole_meta"
+    unigramAll="syl_norm_split_meta.csv"
+    ngramsOutName=$N'-grams_meta.csv'
 fi
 #concatenation into one file of variable length syllable pitch contours
 #this script resides in the syl_csv_norm_whole directory
@@ -46,8 +46,9 @@ fi
 
 
 
-echo 'concatenating unigrams...'
-python concat.py $unigramPath"/*.csv" $unigramAll
+#echo 'concatenating unigrams...'
+#python concat.py $unigramPath"/*.csv" $unigramAll
+echo unigram file:
 wc -l $unigramAll
 
 
@@ -71,8 +72,8 @@ mv $ngramsOutName  downsample_ngrams_one/
 #output file (option 2, for ngrams):'downsample_syl_tri.csv' or _bi.csv
 echo 'downsampling...'
 #specify the length of downsampled vector
-comp_len=30
+comp_len=300
 #the second argument controls on or off of smoothing
-python downsample.py $N $smooth $comp_len
+python downsample_meta.py $N $smooth $comp_len whole
 ls -lt | head
 #then move your output file (one file) into csv/

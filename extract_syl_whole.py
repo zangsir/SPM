@@ -92,10 +92,11 @@ def append_syl(pv,outname):
 
     f=open(outname,'a')
     for i in range(len(pv)):
-        row=pv[i]
+        row=pv[i][:-1]
         #append meta information
         row.append(outname.split('.')[0])
         row.append(str(i))
+        row.append(pv[i][-1])
 
         line=','.join(row)
         f.write(line+'\n')

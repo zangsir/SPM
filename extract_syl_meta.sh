@@ -30,11 +30,11 @@ echo whole mode...
 #output directory is specified in this script to match the input of next py script.
 echo extracting whole syllables...
 #python extract_syl_whole.py
-echo concat...
-python concat.py "syl_csv_norm_whole_meta/*.csv" "syl_norm_whole_meta.csv"
-wc -l syl_norm_whole_meta.csv
+#echo concat...
+#python concat.py "syl_csv_norm_whole_meta/*.csv" "syl_norm_whole_meta.csv"
+#wc -l syl_norm_whole_meta.csv
 echo downsampling...
-python downsample_meta.py 1 0 100 whole
-
-wc -l downsample_syl_whole_meta.csv
+python downsample_meta.py 1 0 80 whole
+ls -lt | head
+#wc -l downsample_syl_whole_meta.csv
 fi

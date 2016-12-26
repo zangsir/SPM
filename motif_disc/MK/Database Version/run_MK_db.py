@@ -4,6 +4,7 @@
 import sys
 import subprocess
 import re
+from os import listdir
 
 
 def run_MK_db(path, input_file, num_iter):
@@ -26,13 +27,12 @@ def get_num_of_lines(path,input_file):
     f=open(input_full,'r').read().split('\n')
     c=0
     for line in f:
-        if line!="":
-            c+=1
+        c+=1
     return c            
 
-def extract_tuples(log_file,input_file):
+def extract_tuples(log_file):
     g=open(log_file,'r').read().split('\n')
-    outfile=input_file.split('.')[0]+'_tuple.txt'
+    outfile=log_file.split('_log')[0]+'_tuple.txt'
 
     dist_pat=r'\d*\.\d+'
     dist_pair=r'\d+ , \d+'
@@ -69,19 +69,24 @@ def extract_tuples(log_file,input_file):
     
     
 def main():
-    input_file='downsample_syl_2_meta_100_MK.txt'
-    #log of results
-    log_file=input_file.split('.')[0]+'_log.txt'
-    path='mk_txt'
+    #input_file='downsample_syl_2_meta_100_MK.txt'
     num_iter=int(sys.argv[1])
-    log=run_MK_db(path,input_file,num_iter)
-    g=open(log_file,'a')
-    for results in log:
-        g.write("\n\n===========\n\n")
-        g.write(results)
-    g.close()
+    
+    path='mk_txt'
+    onlyfiles = [ f for f in listdir(path) if f.endswith("_MK.txt")]
+    #print onlyfiles
+    for input_file in onlyfiles:
+        log=run_MK_db(path,input_file,num_iter)
+        #log of results
+        log_file=input_file.split('.')[0] + "_" + str(num_iter) + '_log.txt'
+        g=open(path+'/'+log_file,'w').close()
+        g=open(path+'/'+log_file,'a')
+        for results in log:
+            g.write("\n\n===========\n\n")
+            g.write(results)
+        g.close()
 
-    extract_tuples(log_file,input_file)
+        extract_tuples(path+'/'+log_file)
 
 
 

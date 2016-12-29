@@ -16,11 +16,11 @@ def make_space_ver(input_file,output_file):
 def main():
     path = sys.argv[1]
     onlyfiles = [ f for f in listdir(path) if f.endswith(".csv")]
-    #print onlyfiles
+    print onlyfiles
     for file_name in onlyfiles:
-        print file_name
+        print "input:",file_name
         input_file = path + "/" + file_name
-        output_file = input_file.replace("csv","txt")
+        output_file = input_file.replace(".csv",".txt")
         make_space_ver(input_file,output_file)
 
 if __name__ == '__main__':

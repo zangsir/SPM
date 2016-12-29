@@ -129,6 +129,7 @@ def main():
     #total_ori=read_csv_ori_file(csv_file)
     path='mk_txt'
     ori_path='original_ver'
+    #for each tuple file (which stores information on motif pairs), find its original version data file with the meta attributes, plot the data and append (also pickle them) the attributes.
     onlyfiles = [ f for f in listdir(path) if f.endswith("_10_tuple.txt")]
     #print onlyfiles
     for file_name in onlyfiles:
@@ -149,18 +150,21 @@ def main():
         dist_pickle_file='pickle/'+firstname+'_dist.npy'
 
 
-        #then read original file for pitch track and meta attributes
-        numbers,attributes=read_csv_ori_file(ori_path+"/"+original_file)
-        #plot the pairs by its index number and also put in the attributes to id where it came from
+     
         
         print "num motifs:",len(motif_tuples_unique)
         if os.path.isfile(attr_pickle_file):
+            #in this case we won't need to read numbers and attributes from read_csv_ori_file from scratch
             print 'loading saved data objects...'
             all_attr=np.load(attr_pickle_file)
             all_data=np.load(data_pickle_file)
             all_dist=np.load(dist_pickle_file)    
         else:
             print 'extracting and pickling data objects...'
+            #then read original file for pitch track and meta attributes
+            #this script has these utilities that are very useful in reading original data files, you can also pickle original data objects.
+            numbers,attributes=read_csv_ori_file(ori_path+"/"+original_file)
+            #plot the pairs by its index number and also put in the attributes to id where it came from
             all_data=[]
             all_dist=[]
             all_attr=[]

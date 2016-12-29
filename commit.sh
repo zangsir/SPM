@@ -2,7 +2,7 @@
 
 ##### MUST SUPPLY A COMMIT MESSAGE!!!!!
 cp *.py *.sh *.praat *.ipynb ~/repo/SPM
-cp motif_disc/MK/Database\ Version/*.py *.sh ~/repo/SPM/motif_disc/MK/Database\ Version/
+cp motif_disc/MK/Database\ Version/*.py *.sh *.ipynb ~/repo/SPM/motif_disc/MK/Database\ Version/
 cd ~/repo/SPM
 git status
 git add -A

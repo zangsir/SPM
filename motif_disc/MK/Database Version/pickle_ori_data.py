@@ -1,3 +1,5 @@
+#use this script to pickle files from original version, so that you have data objects pickled for quick access when in other processes. 
+
 import matplotlib.pyplot as plt
 import sys,re
 from os import listdir

@@ -2,7 +2,9 @@
 import matplotlib.pyplot as plt
 import sys,re
 from os import listdir
-
+from matplotlib.backends.backend_pdf import PdfPages
+import numpy as np
+import os
 
 def get_attributes(index_array):
     #get the attributes for a pair of motifs, e.g.
@@ -55,7 +57,7 @@ def read_csv_ori_file(csv_file):
         if line!='':
             #l=line.split(',')
             #get numbers and get attributes
-            pat_label=r',\d?\d,'
+            pat_label=r',\d+,'
             m=re.search(pat_label,line)
             num_end=m.start()
             numbers=line[:num_end]
@@ -86,7 +88,36 @@ def get_unique_tuples(tuples_list):
             unique.append(i)
     return unique
 
+def plot_multi_page(data,dists,attrs,outplotname):
+    # The PDF document
+    pdf_pages = PdfPages(outplotname)
+     
+    # Generate the pages
+    nb_plots = len(data)
+    nb_plots_per_page = 5
+    nb_pages = int(np.ceil(nb_plots / float(nb_plots_per_page)))
+    grid_size = (nb_plots_per_page, 1)
+     
+    for i, samples in enumerate(data):
+        # Create a figure instance (ie. a new page) if needed
+        if i % nb_plots_per_page == 0:
+            fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
+        tones=attrs[i][0][0] + "(red)|" + attrs[i][1][0]
+        #print tones
+        # Plot stuffs !
+        plt.subplot2grid(grid_size, (i % nb_plots_per_page, 0))
+        plt.plot(samples[0],'r')
+        plt.plot(samples[1])
+        plt.title(str(i) + ","+ str(dists[i]) + ",tones: " + tones)
 
+
+        # Close the page if needed
+        if (i + 1) % nb_plots_per_page == 0 or (i + 1) == nb_plots:
+            plt.tight_layout()
+            pdf_pages.savefig(fig)
+     
+    # Write the PDF document to the disk
+    pdf_pages.close()
 
 
 
@@ -98,60 +129,60 @@ def main():
     #total_ori=read_csv_ori_file(csv_file)
     path='mk_txt_test'
     ori_path='original_ver'
+    #for each tuple file (which stores information on motif pairs), find its original version data file with the meta attributes, plot the data and append (also pickle them) the attributes.
     onlyfiles = [ f for f in listdir(path) if f.endswith("_10_tuple.txt")]
     #print onlyfiles
     for file_name in onlyfiles:
-        print file_name
+        print "============"+file_name
+        firstname=file_name.split('.')[0]
+        outplotname='plots/'+firstname+'.pdf'
         original_file=file_name.split('_MK_10_tuple')[0]+'.csv'
+        if os.path.isfile(outplotname):
+            continue
         input_file = path + "/" + file_name
         #first read in the tuple file to get dist and motif pairs index numbers,
         motif_tuples=read_tuple_file(input_file)
         motif_tuples_unique=get_unique_tuples(motif_tuples)
-        #then read original file for pitch track and meta attributes
-        numbers,attributes=read_csv_ori_file(ori_path+"/"+original_file)
-        #plot the pairs by its index number and also put in the attributes to id where it came from
         
-
-        #set up a plot matrix, then plot one by one for each motif pair
-        #set this number
-        num_per_row=1
-        plot_name=file_name.split('.')[0]+'.png'
-        plot_dir='plots'
-
-
-        num_file=len(motif_tuples_unique)
-        num_plot=num_file
-        #plot num_per_row per row
-        while num_plot%num_per_row!=0:
-            num_plot+=1
-        #plot a by b matrix
-        b=num_per_row
-        a=num_plot/b
-        f, axarr = plt.subplots(a,b)
         
+        attr_pickle_file='pickle/'+firstname+'_attr.npy'
+        data_pickle_file='pickle/'+firstname+'_data.npy'
+        dist_pickle_file='pickle/'+firstname+'_dist.npy'
 
+
+     
         
         print "num motifs:",len(motif_tuples_unique)
-        for tp in motif_tuples_unique:
-            dist=tp[0]
-            pair=tp[1:]
-            motif=[numbers[int(pair[0])],numbers[int(pair[1])]]
-            i=j=0
-            #print i,j
-            if num_per_row==1:
-                axarr[i].plot(motif[0])
-                axarr[i].plot(motif[1])
-            else:
-                axarr[i, j].plot(motif[0])
-                axarr[i, j].plot(motif[1])
-
-            if j==b-1 or num_per_row==1:
-                i+=1
-                j=0
-            else:
-                j+=1
-        f.savefig(plot_dir+'/'+plot_name)
-        print 'saved pitch plots ' + plot_name
+        if os.path.isfile(attr_pickle_file):
+            #in this case we won't need to read numbers and attributes from read_csv_ori_file from scratch
+            print 'loading saved data objects...'
+            all_attr=np.load(attr_pickle_file)
+            all_data=np.load(data_pickle_file)
+            all_dist=np.load(dist_pickle_file)    
+        else:
+            print 'extracting and pickling data objects...'
+            #then read original file for pitch track and meta attributes
+            #this script has these utilities that are very useful in reading original data files, you can also pickle original data objects.
+            numbers,attributes=read_csv_ori_file(ori_path+"/"+original_file)
+            #plot the pairs by its index number and also put in the attributes to id where it came from
+            all_data=[]
+            all_dist=[]
+            all_attr=[]
+            for tp in motif_tuples_unique:
+                dist=tp[0]
+                pair=tp[1:]
+                motif_pair=[numbers[int(pair[0])],numbers[int(pair[1])]]
+                attr_pair=[attributes[int(pair[0])],attributes[int(pair[1])]]
+                all_data.append(motif_pair)
+                all_dist.append(dist)
+                all_attr.append(attr_pair)
+            np.save(data_pickle_file, all_data)
+            np.save(attr_pickle_file, all_attr)
+            np.save(dist_pickle_file, all_dist)
+        #print data[4],len(data)
+        #sys.exit()
+        plot_multi_page(all_data,all_dist,all_attr,outplotname)
+            
 
 
 

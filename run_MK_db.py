@@ -79,6 +79,7 @@ def main():
         log=run_MK_db(path,input_file,num_iter)
         #log of results
         log_file=input_file.split('.')[0] + "_" + str(num_iter) + '_log.txt'
+        g=open(path+'/'+log_file,'w').close()
         g=open(path+'/'+log_file,'a')
         for results in log:
             g.write("\n\n===========\n\n")

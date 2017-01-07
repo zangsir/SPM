@@ -1,3 +1,5 @@
+import sys
+import matplotlib.pyplot as plt
 def get_vec(file):
     time=[]
     pitch=[]
@@ -21,3 +23,11 @@ def get_vec_noext(file):
                 time.append(l[0])
                 pitch.append(l[1])
     return time,pitch
+
+def main():
+    inputfile=sys.argv[1]
+    time,pitch=get_vec(inputfile)
+    plt.plot(time,pitch)
+    plt.show()
+if __name__ == '__main__':
+    main()

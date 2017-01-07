@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-#usage:./ext_ngrams.sh N smooth
-#example:./ext_ngrams.sh 2 0 means bigram and smooth off.
+#usage:./ext_ngrams.sh N smooth comp_len
+#example:./ext_ngrams.sh 2 0 100 means bigram and smooth off, extracting with comp_len=100.
 
 #for motif discovery, ngrams should not have labels in the end (but you should keep a version with labels of course)
 
@@ -20,7 +20,7 @@
 #whole syllable extraction
 #input path:'norm_pitch','all_data'
 #output path:'syl_csv_norm_whole'
-#note:different from voiced unigrams, the whole_syl output for ngrams has two extra cols in the end, label and position ('mid', 'end'), as boundaries for the ngrams extraction 
+#note:different from voiced unigrams, the whole_syl output for ngrams has two extra cols in the end, label and position ('mid', 'end'), as boundaries for the ngrams extraction
 #python extract_syl_whole.py
 
 #set N in ngrams
@@ -54,15 +54,29 @@ wc -l $unigramAll
 
 #echo 'done concatenation...'
 echo 'performing ngrams extraction...'
-#ngrams extraction from unigram file 
+#ngrams extraction from unigram file
 #input: syl_norm_split.csv or syl_norm_split_smooth.csv
 #output: trigram_new.csv,or trigram_smooth.csv
 #argument:N in ngrams
+echo $ngramsOutName
+if [ -f downsample_ngrams_one/$ngramsOutName ]
 
+then
+  echo file $ngramsOutName 'already exists in downsample_ngrams_one, skipping extraction...'
+elif [ -f downsample_ngrams_all/$ngramsOutName ]
+then
+  cp temp.txt downsample_ngrams_one/
+  echo file $ngramsOutName 'already exists in downsample_ngrams_all, skipping extraction and moving to target directory...'
+  mv downsample_ngrams_one/* downsample_ngrams_all/
+  mv downsample_ngrams_all/$ngramsOutName  downsample_ngrams_one/
 
-python extract_ngrams.py $N $unigramAll $ngramsOutName
-mv downsample_ngrams_one/* downsample_ngrams_all/
-mv $ngramsOutName  downsample_ngrams_one/
+else
+  cp temp.txt downsample_ngrams_one/
+  echo 'extracting ngram...'
+  python extract_ngrams.py $N $unigramAll $ngramsOutName
+  mv downsample_ngrams_one/* downsample_ngrams_all/
+  mv $ngramsOutName  downsample_ngrams_one/
+fi
 #downsample(note that non-neutral tone selection only happens at the downsample stage, not before)
 #also note that downsample in unigram takes a directory of indie files and outputs one file; in the ngrams case, we already produced one file (trigram_new.csv or bigram_new.csv) in previous step, but we don't want to change the way downsample.py works, so we just put this one file inside the directory it read from.
 #what we do here is that each time, let's say you're downsampling bigrams, so you put the bigram_new.csv into the downsample_ngrams_one/ directory and run downsample.py. All other files (such as trigram_new.csv, or smoothed versions of these) resides in the downsample_ngrams_all/ directory.
@@ -72,7 +86,7 @@ mv $ngramsOutName  downsample_ngrams_one/
 #output file (option 2, for ngrams):'downsample_syl_tri.csv' or _bi.csv
 echo 'downsampling...'
 #specify the length of downsampled vector
-comp_len=300
+comp_len=$3
 #the second argument controls on or off of smoothing
 python downsample_meta.py $N $smooth $comp_len whole
 ls -lt | head

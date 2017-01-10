@@ -75,7 +75,7 @@ def test_plot(pitch):
 def main():
     train_path='all_data/'
     all_speaker=get_all_speaker(train_path)
-    pitch_path='procd_pitch/'
+    pitch_path='procd_pitch_newtrim/'
     #print onlyfiles
     for speaker in all_speaker:
         #working with one speaker
@@ -104,7 +104,7 @@ def main():
                 #print file_pitch
                 file_name=file_pitch.split('_proc')[0]
                 outname=file_name+'_norm.tab'
-                outpath='norm_pitch/'
+                outpath='norm_pitch_newtrim/'
                 time,pitch=get_vec_noext(pitch_path+file_pitch)
                 norm_pitch=normalize(pitch,spk_mean)
                 f=open(outpath+outname,'w')

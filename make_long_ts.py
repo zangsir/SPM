@@ -12,17 +12,24 @@ def get_vec(file):
             pitch.append(l[1])
     return pitch
 
-path='norm_pitch'
+path='norm_pitch_newtrim'
 onlyFiles = [ f for f in listdir(path) if f.endswith(".tab")]
 long_ts=[]
+mode=sys.argv[1]
+if mode=='-i':
+    interject=[0]*200
 for file_pitch in onlyFiles:
-    print file_pitch
+    #print file_pitch
     inputfile=path+'/'+file_pitch
     pitch_vec=get_vec(inputfile)
     long_ts.extend(pitch_vec)
-sys.exit()
-outputfile='all_spk_lts.txt'
-
+    if mode=='-i':
+        long_ts.extend(interject)
+#sys.exit()
+if mode=='-i':
+    outputfile='all_spk_lts_interj.txt'
+elif mode=='-n':
+    outputfile='all_spk_lts.txt'
 print 'total ts length:',len(long_ts)
 
 open(outputfile,'w').close()

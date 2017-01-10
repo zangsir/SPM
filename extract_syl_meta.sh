@@ -24,6 +24,12 @@ python downsample_meta.py 1 0 $comp_len voiced
 #there is only 74411 data points in this, comparing to the syl_csv_norm_whole based data file of 100161 lines. keep in mind that the current extraction is voiced part only and the other one is whole syllable extraction. If you look into syl_csv_norm vs. syl_csv_norm_meta, these directories actually have a number of 0-byte files (and should have the same number of lines) but it turns into non-zero in syl_csv_norm_whole. in a word, the current extraction of voiced parts filters out those unreliable pitch detection syllables.
 #next we can move on down the list of the motif disc. files we want,of course first we need to finish this one by downsampling to 100 points..
 
+
+
+
+
+
+###########whole syllable mode
 else
 
 echo whole mode...

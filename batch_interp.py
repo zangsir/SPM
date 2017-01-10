@@ -7,8 +7,11 @@ import numpy as np
 #adjusted time just ends earlier than time
 #this interpolate_pitch() and the interpolation at the end of trim() is: in the latter, which was applied first, the time variable has a lot of gaps, namely, the segments from praat's pitch estimation without voicing and therefore no pitch values. The former, applied later, will fill in all the value with a continuous time start to end with 0.001s step.
 def interpolate_pitch(begin,end,time,pitch):
-    interp_time=np.arange(float(begin),float(end),0.001)
-    fp=interp1d(time,pitch,bounds_error=False, fill_value=1000)
+    
+    interp_time=np.arange(float(begin)+0.001,float(end)-0.001,0.001)
+    #print 'begin,end:',begin,end
+    #print 'interp b,e:',interp_time[0],interp_time[-1]
+    fp=interp1d(time,pitch)
     interp_pitch=fp(interp_time)
     return interp_time,interp_pitch
 
@@ -37,27 +40,48 @@ def trim(inputfile):
             time.append(float(split[0]))
             pitch.append(float(split[1]))
 
+    #using boxplot to filter out the spurious pitch values
+    pitch_std=np.std(pitch)
+    if pitch_std>45:
+        b=plt.boxplot(pitch)
 
-    B=plt.boxplot(pitch)
-    #plt.savefig(inputfile+'box.pdf')
-    plt.close() 
-    ydata=[item.get_ydata() for item in B['whiskers']]
-    upper=ydata[1][1] #this is the upper whisker
+        ydata=[item.get_ydata() for item in b['whiskers']]
+        upper_first=ydata[1][0]
+        new_pitch=[]
+        new_time=[]
+        for i in range(len(pitch)):
+            if pitch[i]<=upper_first:
+                new_pitch.append(pitch[i])
+                new_time.append(time[i])
 
-    new_pitch=[]
-    new_time=[]
-    for i in range(len(pitch)):
-        if pitch[i]<=upper:
-            new_pitch.append(pitch[i])
-            new_time.append(time[i])
-        
-    adjusted_time=[i for i in time if i<=new_time[-1]]
-        
-    #plt.plot(new_time,new_pitch)
-    fp=interp1d(new_time,new_pitch,bounds_error=False, fill_value=1000)
+
+        fp=interp1d(new_time,new_pitch)
+        begin,end=new_time[0],new_time[-1]
+        interp_time=np.arange(float(begin)+0.001,float(end)-0.001,0.001)
+        pitch_new=interp_pitch=fp(interp_time)
+        B=plt.boxplot(pitch_new)
+        #plt.savefig(inputfile+'box.pdf')
+        #plt.close() 
+        ydata=[item.get_ydata() for item in B['whiskers']]
+        upper=ydata[1][1] #this is the upper whisker
+
+        new_pitch=[]
+        new_time=[]
+        for i in range(len(pitch)):
+            if pitch[i]<=upper:
+                new_pitch.append(pitch[i])
+                new_time.append(time[i])
+            
+        adjusted_time=[i for i in time if i>=new_time[0] and i<=new_time[-1]]
+            
+        #plt.plot(new_time,new_pitch)
+        fp=interp1d(new_time,new_pitch)
+        trimmed_pitch=fp(adjusted_time)
+    else:
+        adjusted_time,trimmed_pitch=time,pitch
+
     ####important: at first when I invented adjusted_time, I used that to interpolate the entire pitch track so the end won't get interpolated in an out-of-bounds manner. But then for the sake of working with textgrids, we changed to doing the interpolation using the entire time of the original track. So beware the fp(time) vs. fp(adjusted_time ) below. 
-    return time,adjusted_time,pitch,fp(adjusted_time)
-
+    return time,adjusted_time,pitch,trimmed_pitch
 
 def plot_orig_interp(orig_time,orig_pitch,trim_time,trim_pitch,outname):
     plot_dir='plots'

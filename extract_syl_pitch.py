@@ -88,7 +88,7 @@ def append_syl(pv,outname):
 def main():
     #for all sentences;get pv(pitch vector); append lines to the output file
     #path is pitch_path
-    path='norm_pitch'
+    path='norm_pitch_newtrim'
     #path='test_qphons'
     data_path='all_data'
     #data_path='test_qphons'

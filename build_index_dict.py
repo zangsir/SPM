@@ -18,7 +18,7 @@ def get_vec(file):
     return pitch
 
 def build_dict():
-    sent_path='norm_pitch/'
+    sent_path='norm_pitch_newtrim/'
     total_index=0
 
     onlyfiles = [ f for f in listdir(sent_path) if f.endswith(".tab")]

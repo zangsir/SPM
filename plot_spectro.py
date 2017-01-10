@@ -135,12 +135,14 @@ def pitch_proc_chain(pitch_tab_file,phons_file):
     #in pitch preprocess, you need phons file because you want to filter out the unvoiced pitch estimation at first, then interpolate back those.
     timestamps,xt,labels=get_annos(phons_file)
     #get some time and pitch files
-    b=timestamps[0][0]
-    e=timestamps[-1][1]
+    #b=timestamps[0][0]
+    #e=timestamps[-1][1]
     #first trim(and interpolate to adjusted time)
     time,adjusted_time,pitch,trim_pitch=trim(pitch_tab_file)
     #then trim unvoiced pitch
     second_adjusted_time,trim_unv_pitch=trim_unvoiced(timestamps,adjusted_time,trim_pitch)
+    #notice that in Jan 2017 we've decided to not use extrapolation because it is a bad idea. therefore we simply use second_adjusted_time as the beginning and ending of our pitch track, we no longer extrapolate to the b and e indicated in .phons files.
+    b,e=second_adjusted_time[0],second_adjusted_time[-1]
     #interpolate to .phons file time with extrapolation on beginning and end at a high(for visibility in plot) constant value
     interp_time,interp_pitch=interpolate_pitch(b,e,second_adjusted_time,trim_unv_pitch)
     return interp_time,interp_pitch
@@ -177,7 +179,7 @@ def trim_unvoiced(timestamps,adjusted_time,trim_pitch):
                         if adjusted_time[i]>=float(start) and adjusted_time[i] <=float(end)]
             trim_unv_pitch.extend(syl_values[:])
             trim_unv_time.extend(syl_times[:])
-    second_adjusted_time=[time for time in adjusted_time if time>=trim_unv_time[0] and time<=trim_unv_time[-1]]
+    second_adjusted_time=[t for t in adjusted_time if t>=trim_unv_time[0] and t<=trim_unv_time[-1]]
 
     fp=interp1d(trim_unv_time,trim_unv_pitch)
 

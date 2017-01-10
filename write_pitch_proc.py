@@ -1,3 +1,4 @@
+#this is part of the run_get_pitch.sh chain
 from plot_spectro import *
 import sys
 from os import listdir
@@ -7,7 +8,7 @@ from os import listdir
 pitch_path=sys.argv[1]
 phons_path=sys.argv[2]
 #pitch_path=phons_path='pitchtest'
-outdir='procd_pitch'
+outdir='procd_pitch_newtrim'
 onlyfiles = [ f for f in listdir(phons_path) if f.endswith(".phons")]
 for phons_file in onlyfiles:
     #print phons_file

@@ -11,7 +11,6 @@ sound_files$=sound_path$ + "*.flac"
 Create Strings as file list: "fileList", sound_files$
 fileList = selected("Strings")
 fileCount = Get number of strings
-#soundDir$="/Users/zangsir/Desktop/speech-exp-diuss/test/"
 
 for curFile from 1 to fileCount
     #appendInfoLine: curFile

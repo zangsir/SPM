@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
-import sys
+import sys,pickle
 from os import listdir
 import numpy as np
 
@@ -23,8 +23,25 @@ def pitch_floor(interp_pitch):
     return interp_pitch
 
 
+def read_tab_only(inputfile):
+    
+    f=open(inputfile,'r').read().split('\n')
 
-def trim(inputfile):
+    time=[]
+    pitch=[]
+    for i in range(1,len(f)):
+        line=f[i]
+        if line!="":
+            split=line.split('\t')
+            #print split
+            time.append(float(split[0]))
+            pitch.append(float(split[1]))
+    
+    #plt.plot(pitch,'gx')
+    return time,pitch
+
+
+def trim_old(inputfile):
     """input should be a pitch.tab file"""
     
     #filename='pitcCHJ000032.pitch_simple.tab'
@@ -82,6 +99,51 @@ def trim(inputfile):
 
     ####important: at first when I invented adjusted_time, I used that to interpolate the entire pitch track so the end won't get interpolated in an out-of-bounds manner. But then for the sake of working with textgrids, we changed to doing the interpolation using the entire time of the original track. So beware the fp(time) vs. fp(adjusted_time ) below. 
     return time,adjusted_time,pitch,trimmed_pitch
+
+
+def trim(inputfile,speaker):
+    T=130
+    pickle_file='spk_mean_dict.p'
+    spk_mean_dict=pickle.load(open(pickle_file,'rb'))
+
+    spk_mean=spk_mean_dict[speaker]
+    time,pitch=read_tab_only(inputfile)
+    segments_time=[[0]]
+    segments_pitch=[[spk_mean]]
+    begin=0
+    for i in range(1,len(time)):
+        if time[i]-time[i-1]>0.0012:
+            segments_pitch.append(pitch[begin:i-1])
+            segments_time.append(time[begin:i-1])
+            begin=i
+            #print i
+    #print i
+    segments_time.append(time[begin:])
+    segments_pitch.append(pitch[begin:])
+    #print len(segments_time)
+    #print segments_pitch
+    #filter
+    filtered_segments_time=[]
+    filtered_segments_pitch=[]
+    
+    for i in range(1,len(segments_pitch)):
+        beginning_d1=segments_pitch[i][0]-segments_pitch[i-1][-1]
+        if i<len(segments_pitch)-1:
+            ending_d1=segments_pitch[i+1][-0]-segments_pitch[i][-1]
+            if not (np.abs(beginning_d1)>T and np.abs(ending_d1)>T):
+                filtered_segments_time.append(segments_time[i])
+                filtered_segments_pitch.append(segments_pitch[i])
+        elif i==(len(segments_pitch)-1):
+            if not np.abs(beginning_d1)>T:
+                filtered_segments_time.append(segments_time[i])
+                filtered_segments_pitch.append(segments_pitch[i])
+    total_filtered_time=[]
+    total_filtered_pitch=[]
+    for i in range(len(filtered_segments_pitch)):
+        total_filtered_time.extend(filtered_segments_time[i])
+        total_filtered_pitch.extend(filtered_segments_pitch[i])
+    return time,total_filtered_time,pitch,total_filtered_pitch
+
 
 def plot_orig_interp(orig_time,orig_pitch,trim_time,trim_pitch,outname):
     plot_dir='plots'

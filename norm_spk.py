@@ -4,6 +4,9 @@ from downsample import *
 import random
 import matplotlib.pyplot as plt
 
+def hertz_to_bark(pitch):
+    return 7.0 * np.log (pitch/650.0 + np.sqrt (1 + (pitch/650.0)**2))
+
 def running_mean(x, N):
     cumsum = np.cumsum(np.insert(x, 0, 0)) 
     return (cumsum[N:] - cumsum[:-N]) / N 
@@ -16,8 +19,8 @@ def get_speaker_mean(speaker,path):
         time,pitch=get_vec_noext(path+file_pitch)
 
         pitch_float=[float(i) for i in pitch]
-        pitch_log=np.log2(pitch_float)
-        all_pitch.extend(pitch_log[:])
+        #pitch_bark=hertz_to_bark(pitch_float)
+        all_pitch.extend(pitch_float[:])
     return np.mean(all_pitch)
 
 
@@ -28,8 +31,8 @@ def normalize(pitch,spk_mean):
     #print pitch[:100],'here'
     pitch_float=[float(i) for i in pitch]
     pitch=np.array(pitch_float)
-    log_pitch=np.log2(pitch)
-    norm_pitch=log_pitch-spk_mean
+    bark_pitch=hertz_to_bark(pitch)
+    norm_pitch=(bark_pitch- hertz_to_bark(spk_mean))/np.std(bark_pitch)
     #log_pitch=np.log(norm_pitch)
     #down_pitch=downsample_mix(log_pitch,30)
     return norm_pitch

@@ -142,7 +142,7 @@ def pitch_proc_chain(pitch_tab_file,phons_file):
     #print speaker
     time,adjusted_time,pitch,trim_pitch=trim(pitch_tab_file,speaker)
     #then trim unvoiced pitch
-    print 'adj time,trim pitch:',adjusted_time,trim_pitch
+    #print 'adj time,trim pitch:',adjusted_time,trim_pitch
     second_adjusted_time,trim_unv_pitch=trim_unvoiced(timestamps,adjusted_time,trim_pitch)
     #notice that in Jan 2017 we've decided to not use extrapolation because it is a bad idea. therefore we simply use second_adjusted_time as the beginning and ending of our pitch track, we no longer extrapolate to the b and e indicated in .phons files.
     b,e=second_adjusted_time[0],second_adjusted_time[-1]

@@ -102,9 +102,38 @@ def trim_old(inputfile):
 
 
 def trim(inputfile,speaker):
-    T=130
+    """ filtered std dict
+    FAJ 83.6469630271
+    XUL 65.3227862167
+    XIN 63.1491482289
+    RUO 58.7738373943
+    KOF 53.1016103088
+    SHH 51.1242084885
+    DOH 48.0528415434
+    CHJ 46.9012943088
+    TIK 45.0356545031
+    CHX 43.3203575558
+    XIJ 42.8782718807
+    WAJ 40.1182398797
+    XIH 39.168985772
+    HAT 38.123754677
+    OUT 36.9467872932
+    XIY 36.3617609577
+    LIS 35.181348636
+    MAK 34.7961956528
+    DIL 32.4673009891
+    SUC 23.753140983"""
     pickle_file='spk_mean_dict.p'
+    pickle_file_fil_std='fil_std_dict.p'
+
     spk_mean_dict=pickle.load(open(pickle_file,'rb'))
+    fil_std_dict=pickle.load(open(pickle_file_fil_std,'rb'))
+
+    fil_std=fil_std_dict[speaker]
+    if fil_std<70:
+        T=130
+    else:
+        T=200
 
     spk_mean=spk_mean_dict[speaker]
     time,pitch=read_tab_only(inputfile)
@@ -127,16 +156,26 @@ def trim(inputfile,speaker):
     filtered_segments_pitch=[]
     
     for i in range(1,len(segments_pitch)):
+        print len(segments_pitch[i]),
+        if len(segments_pitch[i])<50:
+            continue
         beginning_d1=segments_pitch[i][0]-segments_pitch[i-1][-1]
         if i<len(segments_pitch)-1:
             ending_d1=segments_pitch[i+1][-0]-segments_pitch[i][-1]
             if not (np.abs(beginning_d1)>T and np.abs(ending_d1)>T):
                 filtered_segments_time.append(segments_time[i])
                 filtered_segments_pitch.append(segments_pitch[i])
-        elif i==(len(segments_pitch)-1):
-            if not np.abs(beginning_d1)>T:
+            elif not (np.abs(beginning_d1)>T and len(segments_pitch[i])<100):
                 filtered_segments_time.append(segments_time[i])
                 filtered_segments_pitch.append(segments_pitch[i])
+                
+        elif i==(len(segments_pitch)-1):
+            if not beginning_d1>T:
+                filtered_segments_time.append(segments_time[i])
+                filtered_segments_pitch.append(segments_pitch[i])
+
+
+
     total_filtered_time=[]
     total_filtered_pitch=[]
     for i in range(len(filtered_segments_pitch)):

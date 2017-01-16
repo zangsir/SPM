@@ -1,6 +1,6 @@
 #use this script to build a dictionary that you can look up a sentence file from a index number in the long TS in MK motif discovery context.
 #use -b mode to build the dict and use -q mode to query the dict.
-
+#input: norm_path (normalized pitch files path)
 
 from os import listdir
 import sys,pickle
@@ -17,17 +17,17 @@ def get_vec(file):
             pitch.append(l[1])
     return pitch
 
-def build_dict():
-    sent_path='norm_pitch_newtrim/'
+def build_dict(norm_path):
+    #norm_path='norm_pitch_newtrim_threshold/'
     total_index=0
 
-    onlyfiles = [ f for f in listdir(sent_path) if f.endswith(".tab")]
+    onlyfiles = [ f for f in listdir(norm_path) if f.endswith(".tab")]
     #print onlyfiles
     index_dict=defaultdict(tuple)
     counter=0
 
     for file_name in onlyfiles:
-        input_file=sent_path+file_name
+        input_file=norm_path+file_name
         first_name=file_name.split('_')[0]
         pitch_vec=get_vec(input_file)
         key=(counter,counter+len(pitch_vec)-1)
@@ -48,7 +48,11 @@ def query_dict(query,index_dict):
 
 def main():
     if sys.argv[1]=='-b':
-        build_dict()
+        try:
+            norm_path=sys.argv[2]
+            build_dict(norm_path)
+        except IndexError:
+            print 'Error: must supply input path of normalized pitch.'
     elif sys.argv[1]=='-q':
         query=int(sys.argv[2])
         index_dict=pickle.load(open('index_dict.p','rb'))

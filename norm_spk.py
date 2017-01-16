@@ -1,8 +1,10 @@
 from os import listdir
 import numpy as np
 from downsample import *
-import random
+import random,os,pickle,sys
 import matplotlib.pyplot as plt
+
+#argv: input path, outpath
 
 def hertz_to_bark(pitch):
     return 7.0 * np.log (pitch/650.0 + np.sqrt (1 + (pitch/650.0)**2))
@@ -32,7 +34,8 @@ def normalize(pitch,spk_mean):
     pitch_float=[float(i) for i in pitch]
     pitch=np.array(pitch_float)
     bark_pitch=hertz_to_bark(pitch)
-    norm_pitch=(bark_pitch- hertz_to_bark(spk_mean))/np.std(bark_pitch)
+    norm_pitch=(bark_pitch- hertz_to_bark(spk_mean))
+    #if you want to scale, uncomment this line and delete these comments, leave:/np.std(bark_pitch)
     #log_pitch=np.log(norm_pitch)
     #down_pitch=downsample_mix(log_pitch,30)
     return norm_pitch
@@ -78,11 +81,23 @@ def test_plot(pitch):
 def main():
     train_path='all_data/'
     all_speaker=get_all_speaker(train_path)
-    pitch_path='procd_pitch_newtrim/'
+    pickle_file = 'procd_spk_mean_dict.p'
+    #pitch_path='procd_pitch_newtrim_sec_3/'
+    #outpath='norm_pitch_newtrim/'
+    pitch_path=sys.argv[1]
+    outpath=sys.argv[2]
+
+    procd_spk_mean_dict={}
     #print onlyfiles
     for speaker in all_speaker:
         #working with one speaker
-        spk_mean=get_speaker_mean(speaker,pitch_path)
+        if os.path.isfile(pickle_file):
+            procd_spk_mean_dict=pickle.load(open(pickle_file,'rb'))
+            spk_mean = procd_spk_mean_dict[speaker]
+            print 'loaded speaker mean...'
+        else:
+            spk_mean=get_speaker_mean(speaker,pitch_path)
+            procd_spk_mean_dict[speaker]=spk_mean
         print speaker+'mean:'+str(spk_mean)
         #print spk_mean
         #normalize,log,downsample,smooth
@@ -107,7 +122,7 @@ def main():
                 #print file_pitch
                 file_name=file_pitch.split('_proc')[0]
                 outname=file_name+'_norm.tab'
-                outpath='norm_pitch_newtrim/'
+                
                 time,pitch=get_vec_noext(pitch_path+file_pitch)
                 norm_pitch=normalize(pitch,spk_mean)
                 f=open(outpath+outname,'w')
@@ -118,6 +133,9 @@ def main():
                 for i in range(len(time)):
                     f.write(time[i]+'\t'+str(norm_pitch[i])+'\n')
                 f.close()
+    if not os.path.isfile(pickle_file): 
+        print 'dumping spk mean dict...'
+        pickle.dump(procd_spk_mean_dict, open( pickle_file, "wb" ) )
 
 
 

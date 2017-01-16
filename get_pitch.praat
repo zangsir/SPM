@@ -22,7 +22,7 @@ for curFile from 1 to fileCount
     
     #appendInfoLine: soundname$
     label$=selected$ ("Sound")
-    mani=To Manipulation: pitch_step, pitch_floor, 600
+    mani=To Manipulation: pitch_step, pitch_floor, 500
     pt=Extract pitch tier
     if interpolate$="yes"
        Interpolate quadratically: 4, "Semitones"

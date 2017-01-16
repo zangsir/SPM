@@ -16,7 +16,7 @@ echo voiced mode...
 #voiced only
 python extract_syl_pitch.py
 #concatenate all files under syl_csv_norm_meta into one file.
-python concat.py syl_csv_norm_meta/*.csv syl_norm_meta.csv
+python concat.py "syl_csv_norm_meta/*.csv" "syl_norm_meta.csv"
 
 wc -l syl_norm_meta.csv
 python downsample_meta.py 1 0 $comp_len voiced
@@ -44,9 +44,9 @@ else
   echo extracting whole syllables...
   python extract_syl_whole.py
 fi
-#echo concat...
+echo concat...
 #python concat.py "syl_csv_norm_whole_meta/*.csv" "syl_norm_whole_meta.csv"
-#wc -l syl_norm_whole_meta.csv
+wc -l syl_norm_whole_meta.csv
 echo downsampling...
 python downsample_meta.py 1 0 $comp_len whole
 ls -lt | head

@@ -139,6 +139,7 @@ def pitch_proc_chain(pitch_tab_file,phons_file):
     #e=timestamps[-1][1]
     #first trim(and interpolate to adjusted time)
     speaker=phons_file.split('/')[1][:3]
+
     #print speaker
     time,adjusted_time,pitch,trim_pitch=trim(pitch_tab_file,speaker)
     #then trim unvoiced pitch

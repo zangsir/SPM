@@ -15,6 +15,9 @@ for file_name in onlyfiles:
     print 'comp len:',comp_len
     comp_len = int(comp_len)
     out_file=input_file.split('.')[0] + "_MK.csv"
+    if os.path.isfile(out_file):
+        print 'file exists:',out_file
+        continue
     print 'output file:',out_file
     f=open(input_file, 'r').read().split('\n')
     total_out=[]

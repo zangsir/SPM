@@ -5,7 +5,7 @@
 #this script is the pipeline of pitch preprocessing, including pitch estimation, format conversion, trimming, unvoiced trim, interpolation, with the options in the middle to plot stuff
 
 pitch_step=0.001
-pitch_floor=50
+pitch_floor=75
 interpolation='no'
 sound_path="/Users/zangsir/Desktop/speech-exp-diuss/all_data/"
 

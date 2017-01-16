@@ -8,7 +8,7 @@ from os import listdir
 pitch_path=sys.argv[1]
 phons_path=sys.argv[2]
 #pitch_path=phons_path='pitchtest'
-outdir='procd_pitch_newtrim_sec_test'
+outdir='procd_pitch_newtrim_threshold'
 onlyfiles = [ f for f in listdir(phons_path) if f.endswith(".phons")]
 for phons_file in onlyfiles:
     

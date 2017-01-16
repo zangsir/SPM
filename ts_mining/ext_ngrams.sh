@@ -32,17 +32,17 @@ smooth=$2
 if [ $smooth = 1 ]
 then
     unigramPath="syl_csv_norm_whole_smooth"
-    unigramAll="syl_norm_split_smooth.csv"
+    unigramAll="syl_norm_whole_smooth.csv"
     ngramsOutName=$N'-grams_smooth.csv'
     python smooth_ngrams.py
 else
     unigramPath="syl_csv_norm_whole_meta"
-    unigramAll="syl_norm_split_meta.csv"
+    unigramAll="syl_norm_whole_meta.csv"
     ngramsOutName=$N'-grams_meta.csv'
 fi
 #concatenation into one file of variable length syllable pitch contours
 #this script resides in the syl_csv_norm_whole directory
-#output:syl_norm_split.csv or syl_norm_split_smooth.csv
+#output:syl_norm_whole.csv or syl_norm_whole_smooth.csv
 
 
 
@@ -55,7 +55,7 @@ wc -l $unigramAll
 #echo 'done concatenation...'
 echo 'performing ngrams extraction...'
 #ngrams extraction from unigram file
-#input: syl_norm_split.csv or syl_norm_split_smooth.csv
+#input: syl_norm_whole.csv or syl_norm_whole_smooth.csv
 #output: trigram_new.csv,or trigram_smooth.csv
 #argument:N in ngrams
 echo $ngramsOutName

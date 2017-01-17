@@ -88,7 +88,7 @@ def append_syl(pv,outname):
 def main():
     #for all sentences;get pv(pitch vector); append lines to the output file
     #path is pitch_path
-    path='norm_pitch_newtrim'
+    path='norm_pitch_final'
     #path='test_qphons'
     data_path='all_data'
     #data_path='test_qphons'
@@ -96,7 +96,7 @@ def main():
     onlyFiles = [ f for f in listdir(path) if f.endswith(".tab")]
     outdir='syl_csv_norm_meta'
     #outdir='test_qphons'
-    print onlyFiles
+    #print onlyFiles
     for file_pitch in onlyFiles:
         inputfile=path+'/'+file_pitch
         #print inputfile

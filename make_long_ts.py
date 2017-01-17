@@ -13,16 +13,16 @@ def get_vec(file):
     return pitch
 
 #you should not use original pitch/ for this.
-#path='norm_pitch_newtrim_threshold'
-path='procd_pitch_newtrim_threshold'
+path='norm_pitch_final'
+#path='procd_pitch_newtrim_final'
 onlyFiles = [ f for f in listdir(path) if f.endswith(".tab")]
 long_ts=[]
 mode=sys.argv[1]
 if mode=='-i':
     interject=[0]*200
-    outputfile='all_spk_lts_interj.txt'
+    outputfile=sys.argv[2]
 elif mode=='-n':
-    outputfile='all_spk_lts_proc_thre.txt'
+    outputfile=sys.argv[2]
 else:
     print 'mode is unknown, valid: -i or -n.bye.'
     sys.exit()

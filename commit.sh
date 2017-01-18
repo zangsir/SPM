@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 ##### MUST SUPPLY A COMMIT MESSAGE!!!!!
-cp ~/Desktop/speech-exp-diuss/*.py *.sh *.praat *.ipynb ~/repo/SPM
-cp ~/Desktop/speech-exp-diuss/ts_mining/*.py *.sh ~/repo/SPM/ts_mining/
+cp *.py *.sh *.praat *.ipynb ~/repo/SPM
+#cp ts_mining/*.py *.sh ~/repo/SPM/ts_mining/
+cp ~/Desktop/2017/diss_report/motif_disc/*.tex ~/repo/SPM
 cd ~/repo/SPM
 git status
 git add -A

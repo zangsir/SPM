@@ -2,6 +2,7 @@
 
 import sys
 from os import listdir
+import os
 
 path = sys.argv[1]
 
@@ -23,10 +24,10 @@ for file_name in onlyfiles:
     total_out=[]
     for line in f:
         if line!='':
-            if file_name.startswith('downsample_syl'):#whole unigram or ngrams
-                l=line.split(',')[:-4]
-            elif file_name.startswith('downsample_1_'):#voiced unigram
+            if 'voiced' in file_name:#whole unigram or ngrams
                 l=line.split(',')[:-3]
+            else:#voiced unigram
+                l=line.split(',')[:-4]
             assert(len(l)==comp_len)
             total_out.append(l)
     g=open(out_file,'w').close()

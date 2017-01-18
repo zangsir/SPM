@@ -42,6 +42,7 @@ then
   echo $directory exists
 else
   echo extracting whole syllables...
+  mkdir syl_csv_norm_whole_meta
   python extract_syl_whole.py
 fi
 echo concat...

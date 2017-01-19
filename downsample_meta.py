@@ -277,14 +277,16 @@ def main():
             #print pv
             
             f=open(outfile,'a')
-
+            write_lines=[]
             for p in pv:
                 if mode=='voiced':
                     ts=p[:-3]
                 elif mode=="whole":
                     ts=p[:-4]
                 if len(ts)<comp_len:
-                    #print "WARNING:error in data file in "+file_pitch
+                    #print "WARNING:error in data file in "+
+                    print file_pitch,len(ts)
+                    #print "length of TS is : ", len(ts)
                     count_error_file+=1
                     continue
                 if no_neutral:
@@ -298,7 +300,22 @@ def main():
                 elif mode=="whole":
                     line_write=line+','+p[-4]+','+p[-3]+','+p[-2]+','+p[-1]+'\n'
 
-                f.write(line_write)
+                write_lines.append(line_write)
+            #at this point, we've done processing all lines of this pitch file, so we go on to make sure the last syllable has the label 'end' in case it is not (the actual end skipped)
+            if len(write_lines)==0:
+                #in case the whole sentence doesn't have a good syllable with length of comp_len or more
+                continue
+
+            if N==1 and mode=="whole":
+                last_line_list=line_write.split(',')
+                last_line_list[-1]='end\n'
+                line_write=','.join(last_line_list)
+                write_lines[-1]=line_write
+            
+            #now write to file
+            for line in write_lines:
+                f.write(line)
+                #f.write(line_write)
             f.close()
         print "total file ignored:",count_error_file
 

@@ -31,3 +31,7 @@ python build_index_dict.py -b norm_pitch_newtrim
 #ngrams - 2 0 100 means bigram and smooth off, extracting with comp_len=100.
 ./ext_ngrams.sh 2 0 100
 
+
+
+#make space and MK ver
+./make_MK_ver.sh MK_data/csv_version

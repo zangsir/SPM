@@ -52,7 +52,7 @@ def extract_syl(timestamps,time,pitch,ngrams=True):
                 this_syl_values.append(position)
             pitch_vec.append(this_syl_values)
             k+=1
-        else:
+        else:#consonant case
             if k+2<len(timestamps):
                 next_next_label = timestamps[k+2][2]
                 if next_next_label=="sil":

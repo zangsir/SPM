@@ -3,7 +3,7 @@
 ##### MUST SUPPLY A COMMIT MESSAGE!!!!!
 cp *.py *.sh *.praat *.ipynb ~/repo/SPM
 #cp ts_mining/*.py *.sh ~/repo/SPM/ts_mining/
-cp ~/Desktop/2017/diss_report/motif_disc/*.tex ~/repo/SPM
+cp ~/Desktop/2017/diss_report/motif_disc/motif_diss.tex ~/repo/SPM
 cd ~/repo/SPM
 git status
 git add -A

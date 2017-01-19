@@ -90,7 +90,7 @@ def main():
     #path is pitch_path
     path='norm_pitch_final'
     #path='test_qphons'
-    data_path='all_data'
+    data_path='~/Desktop/speech-exp-diuss/all_data'
     #data_path='test_qphons'
     #dir='pitch_prob'
     onlyFiles = [ f for f in listdir(path) if f.endswith(".tab")]

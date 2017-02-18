@@ -3,7 +3,7 @@ from collections import defaultdict
 import pylab as plt
 
 
-def compute_complexity(ts):
+def compute_complexity_MK(ts):
     """compute complexity of a single TS"""
     #right now I don't need to normalized by length, since all subsequences considered from the same dataset should have the
     #same len, but keep in mind in the future
@@ -395,6 +395,22 @@ def compute_TLC(input_label):
             similarity[(i,j)]=similarity_ij
             total_score+=similarity_ij
     return float(total_score)/max_score(len(input_label),len(input_label[0])),similarity
+
+
+
+
+def square_error(a,b):
+    return np.sqrt(np.sum((a-b)**2))
+
+
+def compute_complexity(ts):
+    x=range(1,len(ts)+1)
+    ts=np.array(ts)
+    z=np.polyfit(x,ts,1)
+    p = np.poly1d(z)
+    y_pred=p(x)
+    err=square_error(y_pred,ts)
+    return err
 
 
 

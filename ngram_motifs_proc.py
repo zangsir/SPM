@@ -23,12 +23,12 @@ def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file
     print 'plotting unnorm comp...'
     #un-normed indie complexity scores
     indie_unnorm_comp_out="plots/"+output_name + '_indie_unnorm_comp.pdf'
-    plot_three_classes(indie_unnorm_comp_out, linear_scores, qlinear_scores, nonlinear_scores, ['linear','qlinear','nonlinear'], 20, [0,1])
+    plot_three_classes(indie_unnorm_comp_out, linear_scores, qlinear_scores, nonlinear_scores, ['linear','qlinear','nonlinear'], 20, [0,10])
     
     #normed indie comp scores
     print 'plotting normed cpm...'
     indie_norm_comp_out="plots/"+output_name + '_indie_norm_comp.pdf'
-    plot_three_classes(indie_norm_comp_out, linear_scores_norm, qlinear_scores_norm, nonlinear_scores_norm,['linear','qlinear','nonlinear'],20,[0,1])
+    plot_three_classes(indie_norm_comp_out, linear_scores_norm, qlinear_scores_norm, nonlinear_scores_norm,['linear','qlinear','nonlinear'],20,[0,10])
     
     #average complexity scores
     linear_ave_comp=multiple_average_complexity(comp_len,par,X,file_prefix,linear,mk_path)
@@ -36,7 +36,7 @@ def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file
     nonlinear_ave_comp=multiple_average_complexity(comp_len,par,X,file_prefix,nonlinear,mk_path)
     ave_comp_out="plots/"+output_name + "_ave_comp.pdf"
     print 'plotting average cmp...'
-    plot_three_classes(ave_comp_out,linear_ave_comp,qlinear_ave_comp,nonlinear_ave_comp,['linear','qlinear','nonlinear'],20,[0,1])
+    plot_three_classes(ave_comp_out,linear_ave_comp,qlinear_ave_comp,nonlinear_ave_comp,['linear','qlinear','nonlinear'],20,[0,10])
     #average boxplot
     boxplot_ave_out="plots/"+output_name+'_ave_box.pdf'
     print 'plotting boxplot...'
@@ -58,7 +58,7 @@ def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file
     #motifs TLC - TLC is just about a motif clusters tone labels, so normalization doesn't matter 
     #class size in number of motif clusters: 43,19,40, 102 motif in total
     TLC_out="plots/"+output_name + "_TLC.pdf"
-    plot_three_classes(TLC_out,linear_TLC,qlinear_TLC,nonlinear_TLC,['linear','qlinear','nonlinear'],20,[0,1])
+    plot_three_classes(TLC_out,linear_TLC,qlinear_TLC,nonlinear_TLC,['linear','qlinear','nonlinear'],20,[0,2])
     
     
     

@@ -3,7 +3,7 @@ import pickle
 import sys
 
 
-def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file,total_num_motifs,num_run=1):
+def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file,total_num_motifs,TLC_switch,num_run=1):
     """before we have written specifically for bigram plots, but here we generalize to any gram, any len data"""
     
     output_name=str(N)+"_gram_"+str(comp_len)+"p"
@@ -34,6 +34,10 @@ def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file
     linear_ave_comp=multiple_average_complexity(comp_len,par,X,file_prefix,linear,mk_path)
     qlinear_ave_comp=multiple_average_complexity(comp_len,par,X,file_prefix,qlinear,mk_path)
     nonlinear_ave_comp=multiple_average_complexity(comp_len,par,X,file_prefix,nonlinear,mk_path)
+    #print 'linear ave comp:',linear_ave_comp
+    #print 'qlinear ave comp:', qlinear_ave_comp
+    #print 'nonlinear ave comp:',nonlinear_ave_comp
+
     ave_comp_out="plots/"+output_name + "_ave_comp.pdf"
     print 'plotting average cmp...'
     plot_three_classes(ave_comp_out,linear_ave_comp,qlinear_ave_comp,nonlinear_ave_comp,['linear','qlinear','nonlinear'],20,[0,10])
@@ -46,19 +50,22 @@ def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file
     plt.title('boxplot of average complexity scores of normalized motif clusters')
     plt.savefig(boxplot_ave_out)
 
-
-
+    
+    
     #TLC
+    if not TLC_switch:
+        sys.exit()
     #file_prefix='downsample_syl_2_meta_100_MK'
     #csv_file='new_csv_data/downsample_syl_2_meta_100.csv'
     linear_TLC=multi_motifs_TLC(comp_len,par,linear,X,csv_file,file_prefix,mk_path)
     qlinear_TLC=multi_motifs_TLC(comp_len,par,qlinear,X,csv_file,file_prefix,mk_path)
     nonlinear_TLC=multi_motifs_TLC(comp_len,par,nonlinear,X,csv_file,file_prefix,mk_path)
     print 'plotting TLC...'
+    #print 'nonlinear TLC scores:',nonlinear_TLC
     #motifs TLC - TLC is just about a motif clusters tone labels, so normalization doesn't matter 
     #class size in number of motif clusters: 43,19,40, 102 motif in total
     TLC_out="plots/"+output_name + "_TLC.pdf"
-    plot_three_classes(TLC_out,linear_TLC,qlinear_TLC,nonlinear_TLC,['linear','qlinear','nonlinear'],20,[0,2])
+    plot_three_classes(TLC_out,linear_TLC,qlinear_TLC,nonlinear_TLC,['linear','qlinear','nonlinear'],20,[0,1])
     
     
     
@@ -88,7 +95,7 @@ def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file
 
 
 
-def plot_controller(N,comp_len):
+def plot_controller(N,comp_len,TLC_switch):
     if N==2 and comp_len==100:
         file_prefix='downsample_syl_2_meta_100_MK'
         csv_file='new_csv_data/downsample_syl_2_meta_100.csv'
@@ -96,7 +103,7 @@ def plot_controller(N,comp_len):
         gt_file="bigram100p_gtruth.p"
         total_num_motifs=102
         mk_path='new_mk_data/'
-        plot_anygram(mk_path,N,comp_len,"52",2,"downsample_syl_2_meta_100_MK",data_file,csv_file,gt_file,total_num_motifs)
+        plot_anygram(mk_path,N,comp_len,"52",2,"downsample_syl_2_meta_100_MK",data_file,csv_file,gt_file,total_num_motifs,TLC_switch)
     if N==2 and comp_len==200:
         file_prefix='downsample_syl_2_meta_200_MK'
         csv_file='csv_version/downsample_syl_2_meta_200.csv'
@@ -106,7 +113,7 @@ def plot_controller(N,comp_len):
         par='56'
         X=2
         mk_path='mk_txt/'
-        plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file,total_num_motifs)
+        plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file,total_num_motifs,TLC_switch)
 
 
 
@@ -119,8 +126,9 @@ def main():
 
     N=sys.argv[1]
     comp_len=sys.argv[2]
+    TLC_switch=bool(sys.argv[3])#if this is off, we don't do TLC, since it is time consuming
     #total_num_motifs=sys.argv[3]#how many true motif clusters among the top 200 motifs
-    plot_controller(int(N),int(comp_len))
+    plot_controller(int(N),int(comp_len),TLC_switch)
 
 if __name__ == '__main__':
     main()

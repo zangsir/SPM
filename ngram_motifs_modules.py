@@ -256,7 +256,7 @@ def plot_three_classes(outfilename,score_1,score_2,score_3,class_labels,num_bins
     data_zip=zip(score_1,score_2,score_3)
     data_zip=np.array(data_zip)
     colors = ['red', 'lime','blue']
-    plt.hist(data_zip, num_bins, normed=1, histtype='bar', color=colors, label=class_labels,range=range_x)
+    plt.hist(data_zip, num_bins, histtype='bar', color=colors, label=class_labels,range=range_x)
     plt.legend(prop={'size': 10})
     #plt.title('Distribution of complexity scores from CMN corpus')
     #plt.show()
@@ -403,6 +403,12 @@ def square_error(a,b):
     return np.sqrt(np.sum((a-b)**2))
 
 
+def reduce_ratio(k):
+    """return a scaled value of k that is less than 10"""
+    while k>=10:
+        k=float(k)/10
+    return k
+
 def compute_complexity(ts):
     x=range(1,len(ts)+1)
     ts=np.array(ts)
@@ -410,9 +416,9 @@ def compute_complexity(ts):
     p = np.poly1d(z)
     y_pred=p(x)
     err=square_error(y_pred,ts)
-    return err
-
-
+    k=reduce_ratio(len(ts))
+    
+    return err/k
 
 def plot_bigram_100p_ipynb_original_procedure():
     #bigram 100p ground truth

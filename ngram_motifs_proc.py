@@ -31,6 +31,7 @@ def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file
     plot_three_classes(indie_norm_comp_out, linear_scores_norm, qlinear_scores_norm, nonlinear_scores_norm,['linear','qlinear','nonlinear'],20,[0,10])
     
     #average complexity scores
+    #linear_ave_comp is all the ave_comp scores pooled for this class in this data file
     linear_ave_comp=multiple_average_complexity(comp_len,par,X,file_prefix,linear,mk_path)
     qlinear_ave_comp=multiple_average_complexity(comp_len,par,X,file_prefix,qlinear,mk_path)
     nonlinear_ave_comp=multiple_average_complexity(comp_len,par,X,file_prefix,nonlinear,mk_path)
@@ -115,6 +116,30 @@ def plot_controller(N,comp_len,TLC_switch):
         mk_path='mk_txt/'
         plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file,total_num_motifs,TLC_switch)
 
+    if N==3 and comp_len==200:
+        file_prefix='downsample_syl_3_meta_200_MK'
+        csv_file='csv_version/downsample_syl_3_meta_200.csv'
+        data_file='mk_txt/downsample_syl_3_meta_200_MK.txt'
+        gt_file="trigram200p_gtruth.p"
+        total_num_motifs=46
+        par='0'
+        X=2
+        mk_path='mk_txt/'
+        plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file,total_num_motifs,TLC_switch)
+
+    if N==3 and comp_len==300:
+        file_prefix='downsample_syl_3_meta_300_MK'
+        csv_file='csv_version/downsample_syl_3_meta_300.csv'
+        data_file='mk_txt/downsample_syl_3_meta_300_MK.txt'
+        gt_file="trigram300p_gtruth.p"
+        total_num_motifs=38
+        par='2115404940'
+        X=2
+        mk_path='mk_txt/'
+        plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file,total_num_motifs,TLC_switch)
+
+
+
 
 
 
@@ -126,7 +151,11 @@ def main():
 
     N=sys.argv[1]
     comp_len=sys.argv[2]
-    TLC_switch=bool(sys.argv[3])#if this is off, we don't do TLC, since it is time consuming
+    print 'len(argv):',len(sys.argv)
+    if len(sys.argv)>3:
+        TLC_switch=bool(sys.argv[3])#if this is off, we don't do TLC, since it is time consuming
+    else:
+        TLC_switch=True
     #total_num_motifs=sys.argv[3]#how many true motif clusters among the top 200 motifs
     plot_controller(int(N),int(comp_len),TLC_switch)
 

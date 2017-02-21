@@ -146,6 +146,28 @@ def main():
         mk_path='mk_txt/'        
         outpath='bigram_200p_train/'
         gen_data_sets(comp_len,par,X,file_prefix,gt_file,mk_path,csv_file,outpath)
-
+    if N=='3' and comp_len=='200':
+        file_prefix='downsample_syl_3_meta_200_MK'
+        csv_file='csv_version/downsample_syl_3_meta_200.csv'
+        data_file='mk_txt/downsample_syl_3_meta_200_MK.txt'
+        gt_file="trigram200p_gtruth.p"
+        total_num_motifs=46
+        par='0'
+        X=2
+        mk_path='mk_txt/'        
+        outpath='trigram_200p_train/'
+        gen_data_sets(comp_len,par,X,file_prefix,gt_file,mk_path,csv_file,outpath)
+    if N=='3' and comp_len=='300':
+        file_prefix='downsample_syl_3_meta_300_MK'
+        csv_file='csv_version/downsample_syl_3_meta_300.csv'
+        data_file='mk_txt/downsample_syl_3_meta_300_MK.txt'
+        gt_file="trigram300p_gtruth.p"
+        total_num_motifs=38
+        par='2115404940'
+        X=2
+        mk_path='mk_txt/'        
+        outpath='trigram_300p_train/'
+        gen_data_sets(comp_len,par,X,file_prefix,gt_file,mk_path,csv_file,outpath)
+    
 if __name__ == '__main__':
     main()

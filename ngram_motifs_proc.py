@@ -51,7 +51,24 @@ def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file
     plt.title('boxplot of average complexity scores of normalized motif clusters')
     plt.savefig(boxplot_ave_out)
 
+    #####plot the correlation between ave_comp and ranking
+    print 'plotting ave rank...'
+    all_rank=linear+qlinear+nonlinear
+    all_ave_comp=linear_ave_comp+qlinear_ave_comp+nonlinear_ave_comp
     
+    x=np.array(all_rank)
+    y=np.array(all_ave_comp)
+    plt.figure()
+    plt.plot(x,y,'x')
+    m, b = np.polyfit(x, y, 1)
+    plt.plot(x, m*x + b, '-')
+    #plt.plot(all_rank,all_ave_comp)
+    plt.xlabel('motif cluster rank')
+    plt.ylabel('motif average complexity')
+    ave_rank_plot="plots/"+output_name+'_ave_rank.pdf'
+    plt.savefig(ave_rank_plot)
+
+
     
     #TLC
     if not TLC_switch:
@@ -69,7 +86,21 @@ def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file
     plot_three_classes(TLC_out,linear_TLC,qlinear_TLC,nonlinear_TLC,['linear','qlinear','nonlinear'],20,[0,1])
     
     
+    print 'plotting TLC-rank...'
+    #all_rank=linear+qlinear+nonlinear
+    all_TLC=linear_TLC+qlinear_TLC+nonlinear_TLC
     
+    #x=np.array(all_rank)
+    y=np.array(all_TLC)
+    plt.figure()
+    plt.plot(x,y,'x')
+    m, b = np.polyfit(x, y, 1)
+    plt.plot(x, m*x + b, '-')
+    #plt.plot(all_rank,all_ave_comp)
+    plt.xlabel('motif cluster rank')
+    plt.ylabel('motif TLC')
+    TLC_rank_plot="plots/"+output_name+'_TLC_Rank.pdf'
+    plt.savefig(TLC_rank_plot)
     
     
     

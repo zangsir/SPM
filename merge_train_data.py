@@ -11,7 +11,7 @@ def merge(path_1,path_2,out_path='merged_train_data/'):
 		file_2=path_2 + filename
 		f1=open(file_1,'r').read()
 		f2=open(file_2,'r').read().split('class\n')[1]
-		outfile=out_path + path_1[:-1] + "_" + path_2[:-1] + "_" + filename 
+		outfile=out_path + filename 
 		g=open(outfile,'w').close()
 		g=open(outfile,'a')
 		g.write(f1)

@@ -50,12 +50,7 @@ def multiple_dataset_ave_comp_pool(data_list):
     return all_linear_ave_comp,all_qlinear_ave_comp,all_nonlinear_ave_comp
 
 
-def get_ground_truth(gt_file):
-    ground_truth_dict=pickle.load(open(gt_file,'rb'))
-    linear=ground_truth_dict['linear']
-    qlinear=ground_truth_dict['qlinear']
-    nonlinear=ground_truth_dict['nonlinear']
-    return linear,qlinear,nonlinear
+
 
 def ave_comps(comp_len,gt_file,par,X,file_prefix,mk_path):
     """compute average complexity scores of three classes for one data file, such as bigram200p"""

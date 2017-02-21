@@ -1,6 +1,7 @@
 import numpy as np
 from collections import defaultdict
 import pylab as plt
+import pickle
 
 
 def compute_complexity_MK(ts):
@@ -383,6 +384,12 @@ def multiple_average_complexity(comp_len,par,X,file_prefix,indexes,path='new_mk_
         all_scores.append(ave_comp)
     return all_scores
 
+def get_ground_truth(gt_file):
+    ground_truth_dict=pickle.load(open(gt_file,'rb'))
+    linear=ground_truth_dict['linear']
+    qlinear=ground_truth_dict['qlinear']
+    nonlinear=ground_truth_dict['nonlinear']
+    return linear,qlinear,nonlinear
 
 def compute_TLC(input_label):
     similarity = defaultdict(lambda:-1)

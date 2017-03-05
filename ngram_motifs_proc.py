@@ -23,12 +23,12 @@ def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file
     print 'plotting unnorm comp...'
     #un-normed indie complexity scores
     indie_unnorm_comp_out="plots/"+output_name + '_indie_unnorm_comp.pdf'
-    plot_three_classes(indie_unnorm_comp_out, linear_scores, qlinear_scores, nonlinear_scores, ['linear','qlinear','nonlinear'], 20, [0,10])
+    plot_three_classes(indie_unnorm_comp_out, linear_scores, qlinear_scores, nonlinear_scores, ['linear','qlinear','nonlinear'], 20, [0,1])
     
     #normed indie comp scores
     print 'plotting normed cpm...'
     indie_norm_comp_out="plots/"+output_name + '_indie_norm_comp.pdf'
-    plot_three_classes(indie_norm_comp_out, linear_scores_norm, qlinear_scores_norm, nonlinear_scores_norm,['linear','qlinear','nonlinear'],20,[0,10])
+    plot_three_classes(indie_norm_comp_out, linear_scores_norm, qlinear_scores_norm, nonlinear_scores_norm,['linear','qlinear','nonlinear'],20,[0,1])
     
     #average complexity scores
     #linear_ave_comp is all the ave_comp scores pooled for this class in this data file
@@ -41,7 +41,7 @@ def plot_anygram(mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file
 
     ave_comp_out="plots/"+output_name + "_ave_comp.pdf"
     print 'plotting average cmp...'
-    plot_three_classes(ave_comp_out,linear_ave_comp,qlinear_ave_comp,nonlinear_ave_comp,['linear','qlinear','nonlinear'],20,[0,10])
+    plot_three_classes(ave_comp_out,linear_ave_comp,qlinear_ave_comp,nonlinear_ave_comp,['linear','qlinear','nonlinear'],20,[0.2,1])
     #average boxplot
     boxplot_ave_out="plots/"+output_name+'_ave_box.pdf'
     print 'plotting boxplot...'

@@ -4,7 +4,22 @@ import pylab as plt
 import pickle
 
 
-def compute_complexity_MK(ts):
+class NgramData:
+    def __init__(self,mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file,total_num_motifs,num_run):
+        self.mk_path=mk_path
+        self.N=N
+        self.comp_len=comp_len
+        self.par=par
+        self.X=X
+        self.file_prefix=file_prefix
+        self.data_file=data_file
+        self.csv_file=csv_file
+        self.gt_file=gt_file
+        self.total_num_motifs=total_num_motifs
+        self.num_run=num_run
+
+
+def compute_complexity(ts):
     """compute complexity of a single TS"""
     #right now I don't need to normalized by length, since all subsequences considered from the same dataset should have the
     #same len, but keep in mind in the future
@@ -39,7 +54,7 @@ def read_csv_data_meta(data_file):
 #read in the motif file, then select if you want the subsequences in this motif cluster to be removed and discarded.
             
 def ind_rm(comp_len,par,X,indexes,num_run,file_prefix,mk_path):
-    """get a list of indexes to be removed. all motif cluster files to be removed is stored in tbr/"""
+    """get a list of indexes to be removed from a bunch of motif cluster files produced by MK. all motif cluster files to be removed is stored in tbr/"""
     #the indexes argument is the indexes of the motif clusters, such as 'remove the first 5 clutsers', then indexes is [1,2,3,4,5]
     #notice it starts from 1 b/c this is how the motif clusters files are named
     all_indexes_tbr=[]
@@ -100,7 +115,7 @@ def update_data(comp_len,data_file,csv_file,num_run,X,indexes_tbr,file_prefix,mk
     
     
     
-def inspect_motif(motif_file,plott):
+def inspect_motif(motif_file,plott=False):
     f=open(motif_file,'r').read().split('\n')
     c=0
     if plott:
@@ -133,30 +148,7 @@ def plot_all_motifs(par,X,num_motif,file_prefix):
         all_ind=inspect_motif(m,True)
         plot_originals(all_ind,file_prefix)
         
-        
-def inspect_motif(motif_file,plott):
-    f=open(motif_file,'r').read().split('\n')
-    c=0
-    if plott:
-        plt.figure()
-        print len(f)
-    all_ind=[]
-    
-    for line in f:
-        c+=1
 
-        if line!='':
-            #print c
-            line=line.strip()
-            ts=line.split(' ')[1:]
-            ind=line.split(' ')[0]
-            all_ind.append(ind)
-            ts=[float(i) for i in ts]
-            #print len(ts)
-            if plott:
-                plt.plot(ts)
-                plt.title(motif_file)
-    return all_ind
 
 def plot_originals(all_ind,file_prefix):
     plt.figure()
@@ -392,6 +384,7 @@ def get_ground_truth(gt_file):
     return linear,qlinear,nonlinear
 
 def compute_TLC(input_label):
+    #input_label is a list of labels
     similarity = defaultdict(lambda:-1)
     total_score=0
     for i in range(len(input_label)):
@@ -416,7 +409,7 @@ def reduce_ratio(k):
         k=float(k)/10
     return k
 
-def compute_complexity(ts):
+def compute_complexity_LSSE(ts):
     x=range(1,len(ts)+1)
     ts=np.array(ts)
     z=np.polyfit(x,ts,1)

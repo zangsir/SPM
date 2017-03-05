@@ -3,19 +3,7 @@ import pickle
 import sys
 
 
-class NgramData:
-    def __init__(self,mk_path,N,comp_len,par,X,file_prefix,data_file,csv_file,gt_file,total_num_motifs,num_run):
-        self.mk_path=mk_path
-        self.N=N
-        self.comp_len=comp_len
-        self.par=par
-        self.X=X
-        self.file_prefix=file_prefix
-        self.data_file=data_file
-        self.csv_file=csv_file
-        self.gt_file=gt_file
-        self.total_num_motifs=total_num_motifs
-        self.num_run=num_run
+
 
 
 

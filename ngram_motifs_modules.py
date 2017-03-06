@@ -94,7 +94,8 @@ def write_to_newcsv(outcsvfile,new_csv_data):
     f.close()
     
 #run this process of removing the selected subsequences
-def update_data(comp_len,data_file,csv_file,num_run,X,indexes_tbr,file_prefix,mk_path):
+def update_data_old(comp_len,data_file,csv_file,num_run,X,indexes_tbr,file_prefix,mk_path):
+    #indexes_tbr is the indexes of the motif clusters, such as remove the first 4 clusters. 
     all_txt_data=read_txt_data(data_file)
     all_csv_data=read_csv_data_meta(csv_file)
     all_ind_tbr=ind_rm(comp_len,X,indexes_tbr,num_run,file_prefix,mk_path)
@@ -112,8 +113,24 @@ def update_data(comp_len,data_file,csv_file,num_run,X,indexes_tbr,file_prefix,mk
     write_to_newtxt(outfile,new_txt_data)
     write_to_newcsv(outcsvfile,new_csv_data)
     
-    
-    
+def update_data(data_path,data_file,csv_path,csv_file,all_ind_tbr):
+    #at any time, there should be only two versions of a motif file: original, and modified (rm_sub). we only keep one version of the modified. We can also save the removed motif clusters somewhere for later reference.
+    all_txt_data=read_txt_data(data_path+data_file)
+    all_csv_data=read_csv_data_meta(csv_path+csv_file)
+    print 'number of subsequences to be removed:',len(all_ind_tbr)
+    new_txt_data=remove_elements_by_ind(all_txt_data,all_ind_tbr)
+    new_csv_data=remove_elements_by_ind(all_csv_data,all_ind_tbr)
+    if data_file.endswith('rm_sub.txt'):
+        outfile=data_file
+    else:
+        outfile=data_file.split('.')[0]+'rm_sub.txt'
+    if csv_file.endswith('rm_sub.csv'):
+        outcsvfile=csv_file
+    else:
+        outcsvfile=csv_file.split('.')[0]+'rm_sub.csv'
+    write_to_newtxt(data_path+outfile,new_txt_data)
+    write_to_newcsv(csv_path+outcsvfile,new_csv_data)
+    return outfile,outcsvfile
     
 def inspect_motif(motif_file,plott=False):
     f=open(motif_file,'r').read().split('\n')
@@ -494,3 +511,20 @@ def plot_bigram_100p_ipynb_original_procedure():
     plt.title('linear regression line showing correlation between complexity and TLC')
     
     print 'correlation:',np.corrcoef(x,y)
+
+
+
+def get_distinct_motifs_old(par,X,path,file_prefix,comp_len,k=200):
+    """get number of distinct motif cluster files"""
+    for i in range(1,k):
+        
+        si_this=str(i)
+        si_next=str(i+1)
+        this_file=path+file_prefix+'_txt_%s_%s_%s.0_%s.txt'%(par,comp_len,X,si_this)
+        next_file=path+file_prefix+'_txt_%s_%s_%s.0_%s.txt'%(par,comp_len,X,si_next)
+        #print this_file
+        this_inds=inspect_motif(this_file)
+        next_inds=inspect_motif(next_file)
+        if this_inds==next_inds:
+            return i
+    return -1

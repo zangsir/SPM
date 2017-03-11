@@ -1,17 +1,11 @@
 import numpy as np
+import pylab as plt
+
 def compute_complexity(ts):
     """compute complexity of a single TS"""
     #right now I don't need to normalized by length, since all subsequences considered from the same dataset should have the
     #same len, but keep in mind in the future
     return np.sqrt(np.sum((ts[i]-ts[i+1])**2 for i in range(len(ts)-1)))
-
-
-
-import pylab as plt
-%matplotlib inline
-
-
-
 
 
 
@@ -140,8 +134,7 @@ def plot_all_motifs(par,X,num_motif,file_prefix):
         plot_originals(all_ind,file_prefix)
         
         
-import pylab as plt
-%matplotlib inline
+
 
 
 def inspect_motif(motif_file,plott):
